@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  product:
+    container_name: product-app
+    restart: always
+    build: ../Product
+    ports:
+      - "6000:6000"
+    links:
+      - mongo
+  mongo:
+    container_name: product-mongo
+    image: mongo
+    ports:
+      - "27017:27017"

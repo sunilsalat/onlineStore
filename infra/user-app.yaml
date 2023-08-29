@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  user:
+    container_name: user-app
+    restart: always
+    build: ../User
+    ports:
+      - "5000:5000"
+    links:
+      - mongo-user
+  product:
+    container_name: product-app
+    restart: always
+    build: ../Product
+    ports:
+      - "8000:6000"
+    links:
+      - mongo-product
+  mongo-user:
+    container_name: mongo-user
+    image: mongo
+    ports:
+      - "27017:27017"
+  mongo-product:
+    container_name: mongo-product
+    image: mongo
+    ports:
+      - "27018:27017"
