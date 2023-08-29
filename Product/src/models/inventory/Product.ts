@@ -8,6 +8,15 @@ const ProductSchema = new mongoose.Schema({
   category: {
     type: String,
   },
+  description: {
+    type: String,
+  },
+  images: [
+    {
+      fileName: "",
+      uri: "",
+    },
+  ],
   isActive: {
     type: Boolean,
   },
