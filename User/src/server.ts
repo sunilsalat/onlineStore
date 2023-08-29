@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import connectToDb from "./config/connectDb";
 import { loadRoutes } from "./routes";
+const amqplib = require("amqplib");
 
 const app = express();
 app.use(express.json());
