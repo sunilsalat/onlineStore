@@ -1,11 +1,10 @@
 import connectToDb from "./config/connectDb";
 import { mqClient } from "./events/mq/rpc";
 import { app } from "./server";
+require("dotenv").config();
 
 const start = async () => {
   await connectToDb("mongodb://mongo-user:27017/users");
-
-  console.log({ sldf: process.env.EXCHANGE_NAME });
 
   await mqClient.connect(
     process.env.EXCHANGE_NAME!,
