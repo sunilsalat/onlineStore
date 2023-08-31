@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import connectToDb from "./config/connectDb";
 import { loadRoutes } from "./routes";
-const amqplib = require("amqplib");
+require("dotenv").config();
 
 const app = express();
 app.use(express.json());
@@ -12,11 +12,4 @@ app.get("/", async (req: Request, res: Response) => {
 
 loadRoutes(app);
 
-const start = async () => {
-  await connectToDb("mongodb://mongo-user:27017/users");
-  app.listen(5000, () => {
-    console.log(`Server running on port ${5000}`);
-  });
-};
-
-start();
+export { app };
