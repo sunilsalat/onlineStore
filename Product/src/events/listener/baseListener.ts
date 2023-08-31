@@ -6,14 +6,14 @@ export const baseListener = async (
   TOPIC: string,
   callback: any
 ) => {
-  await channel.assertExchange(EXCHANGE_NAME, "direct", { durable: true });
+  await channel.assertExchange("ONLINE_STORE", "direct", { durable: true });
   const q = await channel.assertQueue("", { exclusive: true });
   console.log(` Waiting for messages in queue: ${q.queue}`);
 
-  channel.bindQueue(q.queue, EXCHANGE_NAME, TOPIC);
+  channel.bindQueue(q.queue, "ONLINE_STORE", TOPIC);
 
   channel.consume(
-    q,
+    q.queue,
     async (msg) => {
       if (msg.content) {
         const payload = JSON.parse(msg.content.toString());

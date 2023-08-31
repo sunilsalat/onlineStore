@@ -4,6 +4,6 @@ export const PublishMessage = (
   TOPIC: string,
   msg: any
 ) => {
-  channel.publish(EXCHANGE_NAME, TOPIC, Buffer.from(msg));
+  channel.publish(EXCHANGE_NAME, TOPIC, Buffer.from(JSON.stringify(msg)));
   console.log(`Sent: EXCHANGE-${EXCHANGE_NAME}: TOPIC-${TOPIC} `, msg);
 };
