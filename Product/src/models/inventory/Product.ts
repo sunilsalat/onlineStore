@@ -13,8 +13,8 @@ const ProductSchema = new mongoose.Schema({
   },
   images: [
     {
-      fileName: "",
-      uri: "",
+      fileName: String,
+      uri: String,
     },
   ],
   isActive: {
