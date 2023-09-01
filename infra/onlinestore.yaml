@@ -42,5 +42,14 @@ services:
     links:
       - mongo-product
       - rabbitmq
+  nginx-proxy:
+    container_name: nginx-container
+    restart: always
+    build: ../proxy
+    ports:
+      - "80:80"
+    links:
+      - user
+      - product
 volumes:
   shared_database:
