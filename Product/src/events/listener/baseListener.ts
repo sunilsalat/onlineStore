@@ -6,6 +6,8 @@ export const baseListener = async (
   TOPIC: string,
   callback: any
 ) => {
+  console.log({ TOPIC });
+  console.log(callback);
   await channel.assertExchange("ONLINE_STORE", "direct", { durable: true });
   const q = await channel.assertQueue("", { exclusive: true });
   console.log(` Waiting for messages in queue: ${q.queue}`);

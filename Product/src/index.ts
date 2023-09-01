@@ -6,7 +6,7 @@ import { app } from "./server";
 require("dotenv").config();
 
 const start = async () => {
-  await connectToDb("mongodb://mongo-user:27017/product");
+  await connectToDb("mongodb://mongo-product:27017/product");
 
   await mqClient.connect(
     process.env.EXCHANGE_NAME!,
@@ -15,9 +15,11 @@ const start = async () => {
 
   await baseListener(mqClient.channel, "USER_CREATED", async (channel, msg) => {
     const payload = JSON.parse(msg.content.toString());
+    console.log({ payload });
     if (payload) {
       const userObj = await User.create(payload);
       if (userObj) {
+        console.log(`${msg} acknowlodged`);
         channel.ack(msg);
       }
     }

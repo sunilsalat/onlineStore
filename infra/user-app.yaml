@@ -1,16 +1,6 @@
 version: "3"
 
 services:
-  mongo-user:
-    container_name: mongo-user
-    image: mongo
-    ports:
-      - "27017:27017"
-  mongo-product:
-    container_name: mongo-product
-    image: mongo
-    ports:
-      - "27018:27017"
   rabbitmq:
     container_name: rabbitmq-container
     image: rabbitmq
@@ -19,13 +9,28 @@ services:
       - "5672:5672"
       # HTTP management UI
       - "15672:15672"
+  mongo-user:
+    container_name: mongo-user
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - shared_database:/data/db1
+  mongo-product:
+    container_name: mongo-product
+    image: mongo
+    ports:
+      - "27018:27017"
+    volumes:
+      - shared_database:/data/db
+
   user:
     container_name: user-app
     restart: always
     build: ../User
     ports:
       - "5000:5000"
-    depends_on:
+    links:
       - mongo-user
       - rabbitmq
   product:
@@ -34,6 +39,8 @@ services:
     build: ../Product
     ports:
       - "8000:6000"
-    depends_on:
+    links:
       - mongo-product
       - rabbitmq
+volumes:
+  shared_database:
