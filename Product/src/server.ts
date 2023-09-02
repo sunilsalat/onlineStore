@@ -6,7 +6,7 @@ const app = express()
 app.use(express.json())
 
 app.get('/product', async (req: Request, res: Response) => {
-  res.send('Welcome to product app ')
+  res.send('Welcome to product application ')
 })
 
 loadRoutes(app)
@@ -22,6 +22,5 @@ app.use('*', async (req: Request, res: Response) => {
   const responseString = `Full URL is: ${fullUrl}`
   res.send(responseString)
 })
-
 
 export { app }

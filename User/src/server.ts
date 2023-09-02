@@ -6,7 +6,7 @@ const app = express()
 app.use(express.json())
 
 app.get('/', async (req: Request, res: Response) => {
-  res.send('Welcome to user app ')
+  res.send('Welcome to user application ')
 })
 
 loadRoutes(app)

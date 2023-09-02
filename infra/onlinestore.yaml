@@ -9,6 +9,7 @@ services:
       - "5672:5672"
       # HTTP management UI
       - "15672:15672"
+
   mongo-user:
     container_name: mongo-user
     image: mongo
@@ -16,6 +17,7 @@ services:
       - "27017:27017"
     volumes:
       - shared_database:/data/db1
+
   mongo-product:
     container_name: mongo-product
     image: mongo
@@ -30,18 +32,24 @@ services:
     build: ../User
     ports:
       - "8001:8001"
-    links:
+    depends_on:
       - mongo-user
       - rabbitmq
+    volumes:
+      - ../User:/app
+      
   product:
     container_name: product-app
     restart: always
     build: ../Product
     ports:
       - "8002:8002"
-    links:
+    depends_on:
       - mongo-product
       - rabbitmq
+    volumes:
+      - ../Product:/app
+
   nginx-proxy:
     container_name: nginx-container
     restart: always
