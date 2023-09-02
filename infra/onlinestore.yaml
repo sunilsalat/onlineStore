@@ -29,7 +29,7 @@ services:
     restart: always
     build: ../User
     ports:
-      - "5000:5000"
+      - "8001:8001"
     links:
       - mongo-user
       - rabbitmq
@@ -38,7 +38,7 @@ services:
     restart: always
     build: ../Product
     ports:
-      - "8000:6000"
+      - "8002:8002"
     links:
       - mongo-product
       - rabbitmq
