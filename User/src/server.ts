@@ -9,10 +9,9 @@ app.get('/', async (req: Request, res: Response) => {
   res.send('Welcome to user app ')
 })
 
+loadRoutes(app)
 app.use('*', async (req: Request, res: Response) => {
   res.send('Page not found on user app')
 })
-
-loadRoutes(app)
 
 export { app }

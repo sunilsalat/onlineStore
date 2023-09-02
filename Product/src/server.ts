@@ -9,6 +9,8 @@ app.get('/product', async (req: Request, res: Response) => {
   res.send('Welcome to product app ')
 })
 
+loadRoutes(app)
+
 app.use('*', async (req: Request, res: Response) => {
   const protocol = req.protocol
   const host = req.hostname
@@ -21,6 +23,5 @@ app.use('*', async (req: Request, res: Response) => {
   res.send(responseString)
 })
 
-loadRoutes(app)
 
 export { app }

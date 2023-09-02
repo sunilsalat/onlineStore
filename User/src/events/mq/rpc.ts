@@ -1,27 +1,27 @@
 // //Message Broker
-import amqplib from "amqplib";
+import amqplib from 'amqplib'
 
-const MSG_QUEUE_URL = process.env.MSG_QUEUE_UEL;
+const MSG_QUEUE_URL = process.env.MSG_QUEUE_URL
 
 class MQClient {
-  private _channel;
+  private _channel
 
-  get channel() {
+  get channel () {
     if (!this._channel) {
-      throw new Error("Can not access nats before initialization ...");
+      throw new Error('Can not access nats before initialization ...')
     }
 
-    return this._channel;
+    return this._channel
   }
 
-  async connect(EXCHANGE_NAME: string, MSG_QUEUE_URL: string) {
-    const connection = await amqplib.connect(MSG_QUEUE_URL);
-    this._channel = await connection.createChannel();
-    await this._channel.assertQueue(EXCHANGE_NAME, "direct", { durable: true });
+  async connect (EXCHANGE_NAME: string, MSG_QUEUE_URL: string) {
+    const connection = await amqplib.connect(MSG_QUEUE_URL)
+    this._channel = await connection.createChannel()
+    await this._channel.assertQueue(EXCHANGE_NAME, 'direct', { durable: true })
   }
 }
 
-export const mqClient = new MQClient();
+export const mqClient = new MQClient()
 
 // const EXCHANGE_NAME = process.env.EXCHANGE_NAME;
 // const USER_SERVICE = process.env.USER_SERVICE;
