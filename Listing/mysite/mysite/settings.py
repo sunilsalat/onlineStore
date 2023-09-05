@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from djongo import djongo
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -74,13 +75,13 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
- {
+DATABASES = {
         'default': {
             'ENGINE': 'djongo',
-            'NAME': 'product',
+            'NAME': 'your-db-name',
             'ENFORCE_SCHEMA': False,
             'CLIENT': {
-                'host': 'mongodb://mongo-product:27017/product'
+                'host': 'mongodb+srv://<username>:<password>@<atlas cluster>/<myFirstDatabase>?retryWrites=true&w=majority'
             }  
         }
 }
