@@ -37,7 +37,7 @@ services:
       - rabbitmq
     volumes:
       - ../User:/app
-      
+
   product:
     container_name: product-app
     restart: always
@@ -49,6 +49,16 @@ services:
       - rabbitmq
     volumes:
       - ../Product:/app
+
+  listing:
+    container_name: listing-app
+    restart: always
+    build: ../Listing
+    ports:
+      - "8003:8003"
+    depends_on:
+      - mongo-product
+      - rabbitmq
 
   nginx-proxy:
     container_name: nginx-container

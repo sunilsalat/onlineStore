@@ -1,4 +1,9 @@
 numpy
 pandas
 matplotlib
-sklearn
+scikit-learn
+Django
+djongo
+mongoengine
+dnspython
+pymongo
