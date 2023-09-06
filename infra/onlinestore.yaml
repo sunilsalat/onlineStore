@@ -59,6 +59,8 @@ services:
     depends_on:
       - mongo-product
       - rabbitmq
+    volumes:
+      - ../Listing/mysite:/app
 
   nginx-proxy:
     container_name: nginx-container
