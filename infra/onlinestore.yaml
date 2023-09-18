@@ -26,6 +26,14 @@ services:
     volumes:
       - shared_database:/data/db
 
+  mongo-order:
+    container_name: mongo-order
+    image: mongo
+    ports:
+      - "27019:27017"
+    volumes:
+      - shared_database:/data/db2
+
   user:
     container_name: user-app
     restart: always
@@ -62,6 +70,18 @@ services:
     volumes:
       - ../Listing/mysite:/app
 
+  order:
+    container_name: order-app
+    restart: always
+    build: ../Order
+    ports:
+      - "8003:8003"
+    depends_on:
+      - mongo-order
+      - rabbitmq
+    volumes:
+      - ../Order:/app
+
   nginx-proxy:
     container_name: nginx-container
     restart: always
@@ -71,5 +91,6 @@ services:
     links:
       - user
       - product
+      - order
 volumes:
   shared_database:
