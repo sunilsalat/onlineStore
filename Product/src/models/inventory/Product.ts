@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const ProductSchema = new mongoose.Schema({
   name: {
@@ -6,7 +6,8 @@ const ProductSchema = new mongoose.Schema({
     required: [true, "first name is required"],
   },
   category: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    required: [true, "category id is required"],
   },
   description: {
     type: String,

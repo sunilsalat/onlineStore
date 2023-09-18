@@ -27,6 +27,6 @@ export const createCategory = async (req: Request, res: Response) => {
 
 export const getAllCategory = async (req: Request, res: Response) => {
   const { data } = req.body;
-  const obj = await IDalInventory.findMultipleCategoryByFilter(data);
+  const obj = await IDalInventory.findMultipleCategoryByFilter({});
   res.status(201).json({ data: obj, msg: "" });
 };
