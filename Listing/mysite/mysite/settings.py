@@ -11,9 +11,11 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import pymongo
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -21,6 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-l0*%um)gnubxt!vx#9b19@sv&yy19nc-%^=y_!dd6q#qme1f)o'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -84,6 +87,9 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 #             }  
 #         }
 # }
+
+
+
 
 
 # Password validation
