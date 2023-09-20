@@ -13,12 +13,6 @@ const ProductVarinatSchema = new mongoose.Schema({
   costPrice: { type: Number },
   salePrice: { type: Number },
   offeredPrice: { type: Number },
-  size: {
-    type: String,
-  },
-  color: {
-    type: String,
-  },
   weight: {
     type: Number,
   },
