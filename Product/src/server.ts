@@ -1,26 +1,29 @@
-import express, { Request, Response } from 'express'
-import connectToDb from './config/connectDb'
-import { loadRoutes } from './routes'
+require("express-async-errors");
+import express, { Request, Response } from "express";
+import { loadRoutes } from "./routes";
+import { ErrorHandlerMiddleware, NotFoundRoute } from "./middlewares";
 
-const app = express()
-app.use(express.json())
+const app = express();
+app.use(express.json());
 
-app.get('/product', async (req: Request, res: Response) => {
-  res.send('Welcome to product application ')
-})
+app.get(
+  "/inventory/api/v1/product/create",
+  async (req: Request, res: Response) => {
+    const protocol = req.protocol;
+    const host = req.hostname;
+    const url = req.originalUrl;
+    const port = 8002;
 
-loadRoutes(app)
+    const fullUrl = `${protocol}://${host}:${port}${url}`;
 
-app.use('*', async (req: Request, res: Response) => {
-  const protocol = req.protocol
-  const host = req.hostname
-  const url = req.originalUrl
-  const port = 8002
+    const responseString = `Full URL is: ${fullUrl}`;
+    res.send("Welcome to inventory- application ," + responseString);
+  }
+);
 
-  const fullUrl = `${protocol}://${host}:${port}${url}`
+loadRoutes(app);
 
-  const responseString = `Full URL is: ${fullUrl}`
-  res.send(responseString)
-})
+app.use(NotFoundRoute);
+app.use(ErrorHandlerMiddleware);
 
-export { app }
+export { app };

@@ -14,7 +14,7 @@ const ProductSchema = new mongoose.Schema({
   sku: { type: String },
   price: { type: Number },
   seller: { type: String },
-  thumbnail: { name: "", uri: "" },
+  thumbnail: { name: String, uri: String },
   isActive: {
     type: Boolean,
   },

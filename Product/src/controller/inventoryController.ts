@@ -5,6 +5,9 @@ import { ProductVariant } from "../models/inventory/ProductVariant";
 /* Product */
 export const createProduct = async (req: Request, res: Response) => {
   const { data } = req.body;
+  if (data.category_id) {
+    throw new Error("you have not provided category id");
+  }
   const categoryObj = await IDalInventory.findCategoryByFilter({
     _id: data.category_id,
   });
@@ -12,7 +15,7 @@ export const createProduct = async (req: Request, res: Response) => {
     throw new Error("Please select valid category to add product");
   }
   const obj = await IDalInventory.createProduct(data);
-  res.status(201).json({ data: obj, msg: "User created" });
+  res.status(201).json({ data: obj, msg: "Product created" });
 };
 
 export const getAllProduct = async (req: Request, res: Response) => {

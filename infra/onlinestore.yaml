@@ -46,8 +46,8 @@ services:
     volumes:
       - ../User:/app
 
-  product:
-    container_name: product-app
+  inventory:
+    container_name: inventory-app
     restart: always
     build: ../Product
     ports:
@@ -75,7 +75,7 @@ services:
     restart: always
     build: ../Order
     ports:
-      - "8003:8003"
+      - "8004:8004"
     depends_on:
       - mongo-order
       - rabbitmq
@@ -90,7 +90,9 @@ services:
       - "80:80"
     links:
       - user
-      - product
+      - inventory
       - order
+    volumes:
+      - ../proxy/nginx.conf:/etc/nginx/nginx.conf
 volumes:
   shared_database:
