@@ -1,11 +1,11 @@
 import mongoose, { Schema } from "mongoose";
 
 const AttribueValueSchema = new mongoose.Schema({
-  value: {
+  name: {
     type: String,
-    required: [true, "first name is required"],
+    required: [true, "name is required"],
   },
-  arttribueId: {
+  attributeId: {
     type: Schema.Types.ObjectId,
     ref: "Attribute",
   },

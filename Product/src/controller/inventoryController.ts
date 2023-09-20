@@ -49,3 +49,31 @@ export const getAllCategory = async (req: Request, res: Response) => {
   const obj = await IDalInventory.findMultipleCategoryByFilter({});
   res.status(201).json({ data: obj, msg: "" });
 };
+
+/* Attribute */
+export const createAttribute = async (req: Request, res: Response) => {
+  const data = req.body;
+  const obj = await IDalInventory.createAttribute(data);
+  res.status(201).json({ data: obj, msg: "Attribute created" });
+};
+
+export const getAllAttribute = async (req: Request, res: Response) => {
+  const {} = req.body;
+  const obj = await IDalInventory.getAllAttributeByFilter({});
+  res.status(201).json({ data: obj, msg: "" });
+};
+
+/* Attribute Options */
+export const createAttributeOptions = async (req: Request, res: Response) => {
+  const data = req.body;
+  const obj = await IDalInventory.createAttributeOption(data);
+  res.status(201).json({ data: obj, msg: "Attribute Option Created" });
+};
+
+export const getAllAttributeOptions = async (req: Request, res: Response) => {
+  const { attributeId } = req.body;
+  const obj = await IDalInventory.getAllAttributeOptionsByFilter({
+    attributeId,
+  });
+  res.status(201).json({ data: obj, msg: "" });
+};
