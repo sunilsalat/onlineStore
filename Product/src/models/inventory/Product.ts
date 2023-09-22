@@ -1,27 +1,25 @@
 import mongoose, { Schema } from "mongoose";
 
-const ProductSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, "first name is required"],
-  },
-  category: {
-    type: Schema.Types.ObjectId,
-    required: [true, "category id is required"],
-  },
-  description: {
-    type: String,
-  },
-  images: [
-    {
-      fileName: String,
-      uri: String,
+const ProductSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, "first name is required"],
     },
-  ],
-  isActive: {
-    type: Boolean,
+    categoryId: {
+      type: Schema.Types.ObjectId,
+      required: [true, "category id is required"],
+    },
+    description: {
+      type: String,
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
   },
-});
+  { timestamps: true }
+);
 
 const Product = mongoose.model("Product", ProductSchema);
 

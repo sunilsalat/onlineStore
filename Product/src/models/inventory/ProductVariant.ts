@@ -1,29 +1,56 @@
-import mongoose from "mongoose";
+import mongoose, { Models, Schema } from "mongoose";
 
-const ProductVarinatSchema = new mongoose.Schema({
-  productId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Product",
-    required: [true, "Product Id required"],
+const ProductVariantSchema: Schema = new mongoose.Schema(
+  {
+    productId: {
+      type: Schema.Types.ObjectId,
+      ref: "Product",
+      required: [true, "Product Id required"],
+    },
+    productName: {
+      type: String,
+      required: [true, "Product name is required"],
+    },
+    parentProductId: {
+      type: Schema.Types.Mixed,
+    },
+    sku: {
+      type: Number,
+      // required: [true, "sku is required"],
+    },
+    costPrice: {
+      type: Number,
+      default: 0,
+    },
+    salePrice: {
+      type: Number,
+      default: 0,
+    },
+    weight: {
+      type: Number,
+    },
+    volumetricWeight: {
+      type: Number,
+    },
+    isActive: {
+      type: Boolean,
+    },
   },
-  sku: {
-    type: String,
-    required: [true, "sku is required"],
-  },
-  costPrice: { type: Number },
-  salePrice: { type: Number },
-  offeredPrice: { type: Number },
-  weight: {
-    type: Number,
-  },
-  volumetricWeight: {
-    type: Number,
-  },
-  isActive: {
-    type: Boolean,
-  },
+  { timestamps: true }
+);
+
+ProductVariantSchema.pre("save", async function () {
+  // find last sku and inc by one
+  const lastSku = await this.model("ProductVariant")
+    .find({})
+    .sort({ createdAt: -1 })
+    .limit(1);
+  if (lastSku && lastSku[0]?.sku !== undefined) {
+    this.sku = lastSku[0].sku + 1;
+  }
+  this.sku = 0;
 });
 
-const ProductVariant = mongoose.model("ProductVariant", ProductVarinatSchema);
+const ProductVariant = mongoose.model("ProductVariant", ProductVariantSchema);
 
 export { ProductVariant };

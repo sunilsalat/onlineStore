@@ -6,8 +6,13 @@ import { ProductVariant } from "../models/inventory/ProductVariant";
 import { StoreProduct } from "../models/inventory/StoreProduct";
 
 /* Product */
-export const createProduct = async (data: any) => {
-  const productObj = await Product.create(data);
+export const createProduct = async (data: any, session?: any) => {
+  const productObj = await Product.create(data, { session: session });
+  return productObj;
+};
+
+export const updateProduct = async (filter: any, data: any) => {
+  const productObj = await Product.findOneAndUpdate(filter, data);
   return productObj;
 };
 
@@ -22,8 +27,14 @@ export const findProductMultipleProductByFilter = async (filters: any) => {
 };
 
 /* Product Variants */
-export const createProductVariant = async (data: any) => {
-  const productObj = await ProductVariant.create(data);
+export const createProductVariant = async (data: any, session?: any) => {
+  console.log(data);
+  const productObj = await ProductVariant.create(data, { session: session });
+  return productObj;
+};
+
+export const updateProductVariant = async (filter: any, data: any) => {
+  const productObj = await ProductVariant.updateMany(filter, data);
   return productObj;
 };
 

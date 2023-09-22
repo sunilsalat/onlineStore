@@ -25,6 +25,8 @@ services:
       - "27018:27017"
     volumes:
       - shared_database:/data/db
+    # entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0"]
+    # command: --wiredTigerCacheSizeGB 0.25 --replSet s0
 
   mongo-order:
     container_name: mongo-order

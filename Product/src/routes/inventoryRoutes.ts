@@ -4,11 +4,12 @@ const router = Router();
 
 router.post("/product/create", ProductController.createProduct);
 router.post("/product/all", ProductController.getAllProduct);
+router.post("/product/update", ProductController.updateProduct);
 
 router.post("/product/variant/create", ProductController.addProductVariant);
 
-router.post("/category/all", ProductController.createCategory);
-router.post("/category/create", ProductController.getAllProduct);
+router.post("/category/all", ProductController.getAllCategory);
+router.post("/category/create", ProductController.createCategory);
 
 router.post("/att/create", ProductController.createAttribute);
 router.post("/att/all", ProductController.getAllAttribute);

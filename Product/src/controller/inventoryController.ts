@@ -1,21 +1,82 @@
 import { Request, Response } from "express";
 import * as IDalInventory from "../dataaccess/inventoryService";
 import { ProductVariant } from "../models/inventory/ProductVariant";
+import mongoose from "mongoose";
 
 /* Product */
 export const createProduct = async (req: Request, res: Response) => {
-  const { data } = req.body;
-  if (data.category_id) {
-    throw new Error("you have not provided category id");
+  let { categoryId, name, description } = req.body;
+  const session = await mongoose.startSession();
+
+  try {
+    await session.withTransaction(async () => {
+      const categoryObj = await IDalInventory.findCategoryByFilter({
+        _id: categoryId,
+      });
+
+      if (!categoryObj) {
+        throw new Error("Please select valid category to add product");
+      }
+
+      const obj: any = await IDalInventory.createProduct(
+        [
+          {
+            categoryId,
+            name,
+            description,
+          },
+        ],
+        session
+      );
+
+      console.log({ obj });
+
+      if (obj) {
+        await IDalInventory.createProductVariant(
+          [
+            {
+              productId: obj[0]._id,
+              productName: obj[0].name,
+              parentProductId: null,
+            },
+          ],
+          session
+        );
+
+        throw new Error("sfjslfj");
+      }
+
+      await session.commitTransaction();
+      res.status(201).json({ data: obj, msg: "Product created" });
+    });
+  } catch (error) {
+    throw error;
+  } finally {
+    session.endSession();
   }
-  const categoryObj = await IDalInventory.findCategoryByFilter({
-    _id: data.category_id,
-  });
-  if (!categoryObj) {
-    throw new Error("Please select valid category to add product");
+};
+
+export const updateProduct = async (req: Request, res: Response) => {
+  const { productId, data } = req.body;
+  const session = await mongoose.startSession();
+
+  try {
+    await session.withTransaction(async () => {
+      const obj = await IDalInventory.updateProduct({ _id: productId }, data);
+      if (obj) {
+        await IDalInventory.updateProductVariant(
+          { productId },
+          { productName: data.name }
+        );
+      }
+      await session.commitTransaction();
+      res.status(200).json({ data: obj, msg: "Product updated" });
+    });
+  } catch (error) {
+    throw error;
+  } finally {
+    session.endSession();
   }
-  const obj = await IDalInventory.createProduct(data);
-  res.status(201).json({ data: obj, msg: "Product created" });
 };
 
 export const getAllProduct = async (req: Request, res: Response) => {
@@ -39,7 +100,7 @@ export const addProductVariant = async (req: Request, res: Response) => {
 
 /* Category */
 export const createCategory = async (req: Request, res: Response) => {
-  const { data } = req.body;
+  const data = req.body;
   const obj = await IDalInventory.createCategory(data);
   res.status(201).json({ data: obj, msg: "Category created" });
 };
