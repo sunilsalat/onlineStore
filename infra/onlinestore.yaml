@@ -25,6 +25,9 @@ services:
       - "27018:27017"
     volumes:
       - shared_database:/data/db
+      - ./rs-init.sh:/scripts/rs-init.sh
+    entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs"]
+
     # entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0"]
     # command: --wiredTigerCacheSizeGB 0.25 --replSet s0
 

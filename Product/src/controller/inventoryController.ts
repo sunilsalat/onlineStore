@@ -29,8 +29,6 @@ export const createProduct = async (req: Request, res: Response) => {
         session
       );
 
-      console.log({ obj });
-
       if (obj) {
         await IDalInventory.createProductVariant(
           [
@@ -42,8 +40,6 @@ export const createProduct = async (req: Request, res: Response) => {
           ],
           session
         );
-
-        throw new Error("sfjslfj");
       }
 
       await session.commitTransaction();
