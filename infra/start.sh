@@ -1,8 +1,9 @@
 #!/bin/bash
 
 
-docker-compose up -d
+
+docker-compose -f "./onlinestore.yaml" up -d 
 
 sleep 5
 
-docker exec mongo-product /scripts/rs-init.sh
+docker exec mongo-product chmod "+x"  /scripts/rs-init.sh

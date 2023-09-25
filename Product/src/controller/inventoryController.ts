@@ -30,7 +30,7 @@ export const createProduct = async (req: Request, res: Response) => {
       );
 
       if (obj) {
-        await IDalInventory.createProductVariant(
+        const variantObj = await IDalInventory.createProductVariant(
           [
             {
               productId: obj[0]._id,
@@ -40,6 +40,10 @@ export const createProduct = async (req: Request, res: Response) => {
           ],
           session
         );
+
+        if (variantObj) {
+          // Publish msg and add data to PRODUCT table in ORDER service
+        }
       }
 
       await session.commitTransaction();
@@ -62,7 +66,8 @@ export const updateProduct = async (req: Request, res: Response) => {
       if (obj) {
         await IDalInventory.updateProductVariant(
           { productId },
-          { productName: data.name }
+          { productName: data.name },
+          session
         );
       }
       await session.commitTransaction();
@@ -88,10 +93,24 @@ export const addProductVariant = async (req: Request, res: Response) => {
     _id: data.productId,
   });
   if (productObj) {
-    throw new Error("Please select valid prodouct to add variant");
+    throw new Error("Please select valid product to add variant");
   }
+
+  let productOptions = [];
+  for (let i = 0; i < data.productOptions.length; i++) {
+    const options = data.productOptions[i];
+    for (let j = 0; j < options.length; j++) {
+      const attopt = await IDalInventory.getAttributeOption({
+        _id: options[j],
+      });
+      if (attopt) {
+        productOptions.push({});
+      }
+    }
+  }
+
   const obj = await IDalInventory.createProductVariant(data);
-  res.status(201).json({ data: "", msg: "Product variant added" });
+  res.status(201).json({ data: "", msg: "Product variants added" });
 };
 
 /* Category */

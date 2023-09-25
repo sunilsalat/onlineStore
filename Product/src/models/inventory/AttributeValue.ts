@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-const AttribueValueSchema = new mongoose.Schema({
+const AttribueOptionsSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "name is required"],
@@ -11,6 +11,9 @@ const AttribueValueSchema = new mongoose.Schema({
   },
 });
 
-const AttributeValue = mongoose.model("AttributeValue", AttribueValueSchema);
+const AttributeOptions = mongoose.model(
+  "AttributeOptions",
+  AttribueOptionsSchema
+);
 
-export { AttributeValue };
+export { AttributeOptions };

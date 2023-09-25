@@ -1,5 +1,5 @@
 import { Attribute } from "../models/inventory/Attribute";
-import { AttributeValue } from "../models/inventory/AttributeValue";
+import { AttributeOptions } from "../models/inventory/AttributeValue";
 import { Category } from "../models/inventory/Category";
 import { Product } from "../models/inventory/Product";
 import { ProductVariant } from "../models/inventory/ProductVariant";
@@ -28,13 +28,16 @@ export const findProductMultipleProductByFilter = async (filters: any) => {
 
 /* Product Variants */
 export const createProductVariant = async (data: any, session?: any) => {
-  console.log(data);
   const productObj = await ProductVariant.create(data, { session: session });
   return productObj;
 };
 
-export const updateProductVariant = async (filter: any, data: any) => {
-  const productObj = await ProductVariant.updateMany(filter, data);
+export const updateProductVariant = async (
+  filter: any,
+  data: any,
+  session?: any
+) => {
+  const productObj = await ProductVariant.updateMany(filter, data, { session });
   return productObj;
 };
 
@@ -67,11 +70,16 @@ export const getAllAttributeByFilter = async (filter: any) => {
 
 /* Attribute Options */
 export const createAttributeOption = async (data: any) => {
-  const obj = await AttributeValue.create(data);
+  const obj = await AttributeOptions.create(data);
+  return obj;
+};
+
+export const getAttributeOption = async (filter: any) => {
+  const obj = await AttributeOptions.findOne(filter);
   return obj;
 };
 
 export const getAllAttributeOptionsByFilter = async (filter: any) => {
-  const obj = await AttributeValue.find(filter);
+  const obj = await AttributeOptions.find(filter);
   return obj;
 };

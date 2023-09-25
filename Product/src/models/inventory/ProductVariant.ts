@@ -28,9 +28,11 @@ const ProductVariantSchema: Schema = new mongoose.Schema(
     },
     weight: {
       type: Number,
+      default: 0,
     },
     volumetricWeight: {
       type: Number,
+      default: 0,
     },
     isActive: {
       type: Boolean,
