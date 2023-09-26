@@ -41,6 +41,8 @@ const ProductVariantSchema: Schema = new mongoose.Schema(
   { timestamps: true }
 );
 
+ProductVariantSchema.index({ sku: 1 }, { unique: true });
+
 ProductVariantSchema.pre("save", async function () {
   // find last sku and inc by one
   const lastSku = await this.model("ProductVariant")

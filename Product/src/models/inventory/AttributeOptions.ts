@@ -8,12 +8,13 @@ const AttribueOptionsSchema = new mongoose.Schema({
   attributeId: {
     type: Schema.Types.ObjectId,
     ref: "Attribute",
+    required: [true, "attribute is required"],
   },
 });
 
-const AttributeOptions = mongoose.model(
+const AttributeOption = mongoose.model(
   "AttributeOptions",
   AttribueOptionsSchema
 );
 
-export { AttributeOptions };
+export { AttributeOption };

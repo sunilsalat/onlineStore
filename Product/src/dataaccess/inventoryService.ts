@@ -1,7 +1,8 @@
 import { Attribute } from "../models/inventory/Attribute";
-import { AttributeOptions } from "../models/inventory/AttributeValue";
+import { AttributeOption } from "../models/inventory/AttributeOptions";
 import { Category } from "../models/inventory/Category";
 import { Product } from "../models/inventory/Product";
+import { ProductAttribute } from "../models/inventory/ProductAttribute";
 import { ProductVariant } from "../models/inventory/ProductVariant";
 import { StoreProduct } from "../models/inventory/StoreProduct";
 
@@ -30,6 +31,11 @@ export const findProductMultipleProductByFilter = async (filters: any) => {
 export const createProductVariant = async (data: any, session?: any) => {
   const productObj = await ProductVariant.create(data, { session: session });
   return productObj;
+};
+
+export const createProductAttributes = async (data: any, session?: any) => {
+  const productAttribute = await ProductAttribute.create(data);
+  return productAttribute;
 };
 
 export const updateProductVariant = async (
@@ -70,16 +76,18 @@ export const getAllAttributeByFilter = async (filter: any) => {
 
 /* Attribute Options */
 export const createAttributeOption = async (data: any) => {
-  const obj = await AttributeOptions.create(data);
+  const obj = await AttributeOption.create(data);
   return obj;
 };
 
 export const getAttributeOption = async (filter: any) => {
-  const obj = await AttributeOptions.findOne(filter);
+  const obj = await AttributeOption.findOne(filter).populate([
+    { path: "attributeId" },
+  ]);
   return obj;
 };
 
 export const getAllAttributeOptionsByFilter = async (filter: any) => {
-  const obj = await AttributeOptions.find(filter);
+  const obj = await AttributeOption.find(filter);
   return obj;
 };

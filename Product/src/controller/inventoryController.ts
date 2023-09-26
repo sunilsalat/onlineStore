@@ -88,29 +88,56 @@ export const getAllProduct = async (req: Request, res: Response) => {
 
 /* Product Varinat */
 export const addProductVariant = async (req: Request, res: Response) => {
-  const { data } = req.body;
-  const productObj = await IDalInventory.findProductByFilter({
-    _id: data.productId,
+  const { productId, variants } = req.body;
+
+  const productObj: any = await IDalInventory.findProductByFilter({
+    _id: productId,
   });
+
   if (productObj) {
     throw new Error("Please select valid product to add variant");
   }
 
-  let productOptions = [];
-  for (let i = 0; i < data.productOptions.length; i++) {
-    const options = data.productOptions[i];
-    for (let j = 0; j < options.length; j++) {
-      const attopt = await IDalInventory.getAttributeOption({
-        _id: options[j],
-      });
-      if (attopt) {
-        productOptions.push({});
-      }
-    }
-  }
+  const session = await mongoose.startSession();
 
-  const obj = await IDalInventory.createProductVariant(data);
-  res.status(201).json({ data: "", msg: "Product variants added" });
+  try {
+    await session.withTransaction(async () => {
+      for (let i = 0; i < variants.length; i++) {
+        const options = variants[i];
+        // create product variant
+        const varintObj: any = await IDalInventory.createProductVariant({
+          productId: productObj._id,
+          productName: productObj.name,
+          parentProductId: productObj._id,
+        });
+
+        for (let j = 0; j < options.length; j++) {
+          const attributeOption: any = await IDalInventory.getAttributeOption({
+            _id: options[j],
+          });
+
+          if (attributeOption) {
+            const { _id, name, attributeId } = attributeOption;
+            // adding product attributes
+            await IDalInventory.createProductAttributes({
+              productId: productObj._id,
+              sku: varintObj.sku,
+              attributeId: attributeId._id,
+              attribute: attributeId.name,
+              attributeOptionId: _id,
+              attributeOption: name,
+            });
+          }
+        }
+      }
+      await session.commitTransaction();
+      res.status(201).json({ data: "", msg: "Product variants created" });
+    });
+  } catch (error) {
+    throw error;
+  } finally {
+    session.endSession();
+  }
 };
 
 /* Category */

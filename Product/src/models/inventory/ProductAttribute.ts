@@ -7,7 +7,7 @@ const ProductAttributeSchema = new mongoose.Schema(
       ref: "Product",
       required: [true, "Product id required"],
     },
-    skuId: {
+    sku: {
       type: String,
       required: [true, "SKU id is required"],
     },
@@ -18,11 +18,11 @@ const ProductAttributeSchema = new mongoose.Schema(
     attribute: {
       type: String,
     },
-    valueId: {
+    attributeOptionId: {
       type: Schema.Types.ObjectId,
-      ref: "AttributeValue",
+      ref: "AttributeOptions",
     },
-    value: {
+    attributeOption: {
       type: String,
     },
   },
@@ -31,6 +31,9 @@ const ProductAttributeSchema = new mongoose.Schema(
 
 ProductAttributeSchema.index({ skdId: 1, valueId: 1 }, { unique: true });
 
-const AttributeValue = mongoose.model("AttributeValue", ProductAttributeSchema);
+const ProductAttribute = mongoose.model(
+  "ProductAttribute",
+  ProductAttributeSchema
+);
 
-export { AttributeValue };
+export { ProductAttribute };
