@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { Attribute } from "../models/inventory/Attribute";
 import { AttributeOption } from "../models/inventory/AttributeOptions";
 import { Category } from "../models/inventory/Category";
@@ -33,8 +34,38 @@ export const createProductVariant = async (data: any, session?: any) => {
   return productObj;
 };
 
+export const getProductVariants = async (filter: any) => {
+  const { productId } = filter;
+  let pipeline = [
+    { $match: { parentProductId: new Types.ObjectId(productId) } },
+    {
+      $lookup: {
+        from: "productattributes",
+        localField: "sku",
+        foreignField: "sku",
+        as: "attribute_detail",
+      },
+    },
+    // { $project: {} },
+  ];
+
+  const obj = await ProductVariant.aggregate(pipeline);
+  return obj;
+};
+
 export const createProductAttributes = async (data: any, session?: any) => {
   const productAttribute = await ProductAttribute.create(data, {
+    session: session,
+  });
+  return productAttribute;
+};
+
+export const updateSingleProductvariant = async (
+  filter: any,
+  data: any,
+  session?: any
+) => {
+  const productAttribute = await ProductVariant.findOneAndUpdate(filter, data, {
     session: session,
   });
   return productAttribute;

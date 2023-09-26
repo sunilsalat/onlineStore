@@ -8,7 +8,7 @@ const ProductAttributeSchema = new mongoose.Schema(
       required: [true, "Product id required"],
     },
     sku: {
-      type: String,
+      type: Number,
       required: [true, "SKU id is required"],
     },
     attributeId: {

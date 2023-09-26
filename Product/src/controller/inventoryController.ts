@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import * as IDalInventory from "../dataaccess/inventoryService";
 import { ProductVariant } from "../models/inventory/ProductVariant";
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 
 /* Product */
 export const createProduct = async (req: Request, res: Response) => {
@@ -104,7 +104,7 @@ export const addProductVariant = async (req: Request, res: Response) => {
       let sku: any;
       for (let i = 0; i < variants.length; i++) {
         const options = variants[i];
-        // creating product variant
+        let productType = "";
         let payload: any = {
           productId: productObj._id,
           productName: productObj.name,
@@ -115,6 +115,7 @@ export const addProductVariant = async (req: Request, res: Response) => {
           payload.sku = sku;
         }
 
+        // creating product variant
         const varintObj: any = await IDalInventory.createProductVariant(
           [payload],
           session
@@ -130,8 +131,7 @@ export const addProductVariant = async (req: Request, res: Response) => {
           if (attributeOption) {
             const { _id, name, attributeId } = attributeOption;
             // adding product attributes
-
-            await IDalInventory.createProductAttributes(
+            const productatt: any = await IDalInventory.createProductAttributes(
               [
                 {
                   productId: productObj._id,
@@ -144,8 +144,18 @@ export const addProductVariant = async (req: Request, res: Response) => {
               ],
               session
             );
+            productType += `${productatt[0].attributeOption},`;
           }
         }
+
+        await IDalInventory.updateSingleProductvariant(
+          {
+            _id: varintObj[0]._id,
+          },
+          { productType },
+          session
+        );
+        productType = "";
       }
       await session.commitTransaction();
       res.status(201).json({ data: "", msg: "Product variants created" });
@@ -155,6 +165,15 @@ export const addProductVariant = async (req: Request, res: Response) => {
   } finally {
     session.endSession();
   }
+};
+
+export const getAllProductVariants = async (req: Request, res: Response) => {
+  const { productId } = req.body;
+
+  const variants = await IDalInventory.getProductVariants({
+    productId,
+  });
+  res.status(200).json({ data: variants, msg: "" });
 };
 
 /* Category */

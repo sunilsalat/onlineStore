@@ -12,6 +12,7 @@ const ProductVariantSchema: Schema = new mongoose.Schema(
       type: String,
       required: [true, "Product name is required"],
     },
+    productType: { type: String },
     parentProductId: {
       type: Schema.Types.Mixed,
     },
@@ -53,7 +54,7 @@ ProductVariantSchema.pre("save", async function () {
 
   // if sku is  provided do not run auto increment
   if (!this.sku) {
-    if (lastSku && lastSku[0]?.sku) {
+    if (lastSku && lastSku[0]?.sku !== undefined) {
       this.sku = lastSku[0].sku + 1;
     } else {
       this.sku = 0;
