@@ -38,14 +38,14 @@ export const getProductVariants = async (filter: any) => {
   const { productId } = filter;
   let pipeline = [
     { $match: { parentProductId: new Types.ObjectId(productId) } },
-    {
-      $lookup: {
-        from: "productattributes",
-        localField: "sku",
-        foreignField: "sku",
-        as: "attribute_detail",
-      },
-    },
+    // {
+    //   $lookup: {
+    //     from: "productattributes",
+    //     localField: "sku",
+    //     foreignField: "sku",
+    //     as: "attribute_detail",
+    //   },
+    // },
     // { $project: {} },
   ];
 

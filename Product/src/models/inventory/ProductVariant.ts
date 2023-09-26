@@ -44,6 +44,7 @@ const ProductVariantSchema: Schema = new mongoose.Schema(
 );
 
 ProductVariantSchema.index({ sku: 1 }, { unique: true });
+ProductVariantSchema.index({ productId: 1, productType: 1 }, { unique: true });
 
 ProductVariantSchema.pre("save", async function () {
   // find last sku and inc by one
