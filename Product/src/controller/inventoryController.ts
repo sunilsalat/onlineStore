@@ -94,22 +94,33 @@ export const addProductVariant = async (req: Request, res: Response) => {
     _id: productId,
   });
 
-  if (productObj) {
+  if (!productObj) {
     throw new Error("Please select valid product to add variant");
   }
 
   const session = await mongoose.startSession();
-
   try {
     await session.withTransaction(async () => {
+      let sku: any;
       for (let i = 0; i < variants.length; i++) {
         const options = variants[i];
-        // create product variant
-        const varintObj: any = await IDalInventory.createProductVariant({
+        // creating product variant
+        let payload: any = {
           productId: productObj._id,
           productName: productObj.name,
           parentProductId: productObj._id,
-        });
+        };
+
+        if (sku) {
+          payload.sku = sku;
+        }
+
+        const varintObj: any = await IDalInventory.createProductVariant(
+          [payload],
+          session
+        );
+
+        sku = varintObj[0].sku + 1;
 
         for (let j = 0; j < options.length; j++) {
           const attributeOption: any = await IDalInventory.getAttributeOption({
@@ -119,14 +130,20 @@ export const addProductVariant = async (req: Request, res: Response) => {
           if (attributeOption) {
             const { _id, name, attributeId } = attributeOption;
             // adding product attributes
-            await IDalInventory.createProductAttributes({
-              productId: productObj._id,
-              sku: varintObj.sku,
-              attributeId: attributeId._id,
-              attribute: attributeId.name,
-              attributeOptionId: _id,
-              attributeOption: name,
-            });
+
+            await IDalInventory.createProductAttributes(
+              [
+                {
+                  productId: productObj._id,
+                  sku: varintObj[0].sku,
+                  attributeId: attributeId._id,
+                  attribute: attributeId.name,
+                  attributeOptionId: _id,
+                  attributeOption: name,
+                },
+              ],
+              session
+            );
           }
         }
       }

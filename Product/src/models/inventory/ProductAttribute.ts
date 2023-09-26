@@ -29,7 +29,10 @@ const ProductAttributeSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-ProductAttributeSchema.index({ skdId: 1, valueId: 1 }, { unique: true });
+ProductAttributeSchema.index(
+  { sku: 1, attributeOptionId: 1 },
+  { unique: true }
+);
 
 const ProductAttribute = mongoose.model(
   "ProductAttribute",

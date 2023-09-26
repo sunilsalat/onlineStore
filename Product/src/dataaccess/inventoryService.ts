@@ -34,7 +34,9 @@ export const createProductVariant = async (data: any, session?: any) => {
 };
 
 export const createProductAttributes = async (data: any, session?: any) => {
-  const productAttribute = await ProductAttribute.create(data);
+  const productAttribute = await ProductAttribute.create(data, {
+    session: session,
+  });
   return productAttribute;
 };
 

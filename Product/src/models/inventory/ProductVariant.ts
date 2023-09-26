@@ -1,3 +1,4 @@
+import e from "express";
 import mongoose, { Models, Schema } from "mongoose";
 
 const ProductVariantSchema: Schema = new mongoose.Schema(
@@ -49,10 +50,15 @@ ProductVariantSchema.pre("save", async function () {
     .find({})
     .sort({ createdAt: -1 })
     .limit(1);
-  if (lastSku && lastSku[0]?.sku !== undefined) {
-    this.sku = lastSku[0].sku + 1;
+
+  // if sku is  provided do not run auto increment
+  if (!this.sku) {
+    if (lastSku && lastSku[0]?.sku) {
+      this.sku = lastSku[0].sku + 1;
+    } else {
+      this.sku = 0;
+    }
   }
-  this.sku = 0;
 });
 
 const ProductVariant = mongoose.model("ProductVariant", ProductVariantSchema);
