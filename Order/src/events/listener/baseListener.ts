@@ -2,31 +2,31 @@ const SERVICE_NAME = process.env.SERVICE_NAME;
 const EXCHANGE_NAME = process.env.EXCHANGE_NAME;
 
 export const baseListener = async (
-  channel: any,
-  TOPIC: string,
-  callback: any
+    channel: any,
+    TOPIC: string,
+    callback: any
 ) => {
-  console.log({ TOPIC });
-  console.log(callback);
-  await channel.assertExchange("ONLINE_STORE", "direct", { durable: true });
-  const q = await channel.assertQueue("", { exclusive: true });
-  console.log(` Waiting for messages in queue: ${q.queue}`);
+    console.log({ TOPIC });
+    console.log(callback);
+    await channel.assertExchange("ONLINE_STORE", "direct", { durable: true });
+    const q = await channel.assertQueue("", { exclusive: true });
+    console.log(` Waiting for messages in queue: ${q.queue}`);
 
-  channel.bindQueue(q.queue, "ONLINE_STORE", TOPIC);
+    channel.bindQueue(q.queue, "ONLINE_STORE", TOPIC);
 
-  channel.consume(
-    q.queue,
-    async (msg) => {
-      if (msg.content) {
-        const payload = JSON.parse(msg.content.toString());
-        callback(channel, msg);
-        // channel.ack(msg);
-      }
-    },
-    {
-      noAck: false,
-    }
-  );
+    channel.consume(
+        q.queue,
+        async (msg) => {
+            if (msg.content) {
+                const payload = JSON.parse(msg.content.toString());
+                callback(channel, msg);
+                // channel.ack(msg);
+            }
+        },
+        {
+            noAck: false,
+        }
+    );
 };
 
 // export const SubscribeMessage = async (channel, service) => {

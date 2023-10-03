@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import * as IDalInventory from "../dataaccess/inventoryService";
 import { ProductVariant } from "../models/inventory/ProductVariant";
 import mongoose, { Types } from "mongoose";
+import { PublishMessage } from "../events/publisher/basePublisher";
+import { mqClient } from "../events/mq/rpc";
 
 /* Product */
 export const createProduct = async (req: Request, res: Response) => {
@@ -43,6 +45,21 @@ export const createProduct = async (req: Request, res: Response) => {
 
                 if (variantObj) {
                     // Publish msg and add data to PRODUCT table in ORDER service
+                    const ch = mqClient.channel;
+                    PublishMessage(
+                        ch,
+                        process.env.EXCHANGE_NAME!,
+                        "PRODUCT_CREATED",
+                        {
+                            _id: variantObj[0]._id,
+                            productId: obj[0]._id,
+                            name: obj[0].name,
+                            category: obj[0].categoryId,
+                            description: obj[0].description,
+                            sku: variantObj[0].sku,
+                            price: variantObj[0].salePrice,
+                        }
+                    );
                 }
             }
 
@@ -74,10 +91,18 @@ export const updateProduct = async (req: Request, res: Response) => {
                     session
                 );
             }
-
+            // publish message
             if (obj) {
-                console.log("Reached here");
-                // Publish product updated msg to other services
+                const ch = mqClient.channel;
+                PublishMessage(
+                    ch,
+                    process.env.EXCHANGE_NAME!,
+                    "PRODUCT_UPDATED",
+                    {
+                        productId: productId,
+                        data: data,
+                    }
+                );
             }
             await session.commitTransaction();
             res.status(200).json({ data: obj, msg: "Product updated" });
@@ -174,6 +199,25 @@ export const addProductVariant = async (req: Request, res: Response) => {
 
                 varintObj[0].productType = productType;
                 await varintObj[0].save();
+
+                if (varintObj) {
+                    const ch = mqClient.channel;
+                    PublishMessage(
+                        ch,
+                        process.env.EXCHANGE_NAME!,
+                        "PRODUCT_CREATED",
+                        {
+                            _id: varintObj[0]._id,
+                            productId: productObj._id,
+                            name: productObj.name,
+                            category: productObj.categoryId,
+                            description: productObj.description,
+                            sku: varintObj[0].sku,
+                            price: varintObj[0].salePrice,
+                            productType: productType,
+                        }
+                    );
+                }
                 productType = "";
             }
             await session.commitTransaction();
