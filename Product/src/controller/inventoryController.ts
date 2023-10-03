@@ -64,7 +64,8 @@ export const updateProduct = async (req: Request, res: Response) => {
         await session.withTransaction(async () => {
             const obj = await IDalInventory.updateProduct(
                 { _id: productId },
-                data
+                data,
+                session
             );
             if (obj) {
                 await IDalInventory.updateProductsVariant(
@@ -73,7 +74,9 @@ export const updateProduct = async (req: Request, res: Response) => {
                     session
                 );
             }
+
             if (obj) {
+                console.log("Reached here");
                 // Publish product updated msg to other services
             }
             await session.commitTransaction();

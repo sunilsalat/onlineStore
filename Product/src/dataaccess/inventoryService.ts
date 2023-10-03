@@ -13,8 +13,10 @@ export const createProduct = async (data: any, session?: any) => {
     return productObj;
 };
 
-export const updateProduct = async (filter: any, data: any) => {
-    const productObj = await Product.findOneAndUpdate(filter, data);
+export const updateProduct = async (filter: any, data: any, session?: any) => {
+    const productObj = await Product.findOneAndUpdate(filter, data, {
+        session: session,
+    });
     return productObj;
 };
 

@@ -12,6 +12,7 @@ const ProductSchema = new mongoose.Schema({
         type: String,
     },
     sku: { type: String },
+    productType: { type: String },
     price: { type: Number },
     seller: { type: String },
     thumbnail: { name: String, uri: String },
