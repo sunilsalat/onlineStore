@@ -12,7 +12,7 @@ const ProductSchema = new mongoose.Schema({
         type: String,
     },
     productId: { type: Types.ObjectId },
-    sku: { type: String },
+    sku: { type: Number },
     productType: { type: String },
     price: { type: Number },
     seller: { type: String },

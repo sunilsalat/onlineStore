@@ -7,6 +7,7 @@ router.post("/product/all", ProductController.getAllProduct);
 router.post("/product/update", ProductController.updateProduct);
 
 router.post("/product/variant/create", ProductController.addProductVariant);
+router.post("/product/variant/update", ProductController.updateProductVariant);
 router.post("/product/variant/all", ProductController.getAllProductVariants);
 
 router.post("/category/all", ProductController.getAllCategory);

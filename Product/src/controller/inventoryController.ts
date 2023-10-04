@@ -238,6 +238,26 @@ export const getAllProductVariants = async (req: Request, res: Response) => {
     res.status(200).json({ data: variants, msg: "" });
 };
 
+export const updateProductVariant = async (req: Request, res: Response) => {
+    const { variantId, data } = req.body;
+    const obj: any = await IDalInventory.updateProductVariant(
+        { _id: variantId },
+        data
+    );
+
+    if (obj) {
+        const ch = mqClient.channel;
+        PublishMessage(ch, process.env.EXCHANGE_NAME!, "PRODUCT_UPDATED", {
+            variantId: obj._id,
+            data: {
+                price: obj.costPrice,
+            },
+        });
+    }
+
+    res.status(200).json({ data: "", msg: "Product variant updated" });
+};
+
 /* Category */
 export const createCategory = async (req: Request, res: Response) => {
     const data = req.body;

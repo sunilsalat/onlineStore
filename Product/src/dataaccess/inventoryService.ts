@@ -51,14 +51,10 @@ export const updateProductVariant = async (
     data: any,
     session?: any
 ) => {
-    const productAttribute = await ProductVariant.findOneAndUpdate(
-        filter,
-        data,
-        {
-            session: session,
-        }
-    );
-    return productAttribute;
+    const obj = await ProductVariant.findOneAndUpdate(filter, data, {
+        new: true,
+    });
+    return obj;
 };
 
 export const updateProductsVariant = async (

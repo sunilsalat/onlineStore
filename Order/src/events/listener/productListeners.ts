@@ -28,9 +28,8 @@ export const loadProductListeners = async () => {
         async (channel, msg) => {
             const payload = JSON.parse(msg.content.toString());
             if (payload) {
-                console.log("PRODUCT_UPDATED", payload);
                 const productObj = await updateProduct(
-                    payload.productId,
+                    payload.variantId,
                     payload.data
                 );
                 if (productObj) {
