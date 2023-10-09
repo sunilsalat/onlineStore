@@ -9,6 +9,9 @@ export const createOrder = async (req: Request, res: Response) => {
     const obj = await IDalOrder.createOrder(data);
 
     if (obj) {
+        // push msg to expiration service and reserve product for 15 mins
+        //
+
         const ch = mqClient.channel;
         PublishMessage(ch, process.env.EXCHANGE_NAME!, "ORDER_CREATED", {
             orderId: obj._id,

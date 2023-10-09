@@ -1,5 +1,5 @@
 import UserRoutes from "../routes/userRoutes";
 
 export const loadRoutes = (app: any) => {
-  app.use("/api/v1/user", UserRoutes);
+    app.use("/user/api/v1", UserRoutes);
 };

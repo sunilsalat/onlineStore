@@ -1,103 +1,122 @@
 version: "3"
 
 services:
-  rabbitmq:
-    container_name: rabbitmq-container
-    image: rabbitmq
-    ports:
-      # AMQP protocol port
-      - "5672:5672"
-      # HTTP management UI
-      - "15672:15672"
+    rabbitmq:
+        container_name: rabbitmq-container
+        image: rabbitmq
+        ports:
+            # AMQP protocol port
+            - "5672:5672"
+            # HTTP management UI
+            - "15672:15672"
 
-  mongo-user:
-    container_name: mongo-user
-    image: mongo
-    ports:
-      - "27017:27017"
-    volumes:
-      - shared_database:/data/db1
+    redis:
+        container_name: redis-container
+        image: bitnami/redis
+        ports:
+            - "6379:6379"
 
-  mongo-product:
-    container_name: mongo-product
-    image: mongo
-    ports:
-      - "27018:27017"
-    volumes:
-      - shared_database:/data/db
-      - ./rs-init.sh:/scripts/rs-init.sh
-    entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs"]
+    mongo-user:
+        container_name: mongo-user
+        image: mongo
+        ports:
+            - "27017:27017"
+        volumes:
+            - shared_database:/data/db1
 
-    # entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0"]
-    # command: --wiredTigerCacheSizeGB 0.25 --replSet s0
+    mongo-product:
+        container_name: mongo-product
+        image: mongo
+        ports:
+            - "27018:27017"
+        volumes:
+            - shared_database:/data/db
+            - ./rs-init.sh:/scripts/rs-init.sh
+        entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs"]
 
-  mongo-order:
-    container_name: mongo-order
-    image: mongo
-    ports:
-      - "27019:27017"
-    volumes:
-      - shared_database:/data/db2
+        # entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0"]
+        # command: --wiredTigerCacheSizeGB 0.25 --replSet s0
 
-  user:
-    container_name: user-app
-    restart: always
-    build: ../User
-    ports:
-      - "8001:8001"
-    depends_on:
-      - mongo-user
-      - rabbitmq
-    volumes:
-      - ../User:/app
+    mongo-order:
+        container_name: mongo-order
+        image: mongo
+        ports:
+            - "27019:27017"
+        volumes:
+            - shared_database:/data/db2
 
-  inventory:
-    container_name: inventory-app
-    restart: always
-    build: ../Product
-    ports:
-      - "8002:8002"
-    depends_on:
-      - mongo-product
-      - rabbitmq
-    volumes:
-      - ../Product:/app
+    user:
+        container_name: user-app
+        restart: always
+        build: ../User
+        ports:
+            - "8001:8001"
+        depends_on:
+            - mongo-user
+            - rabbitmq
+            - redis
+        volumes:
+            - ../User:/app
 
-  listing:
-    container_name: listing-app
-    restart: always
-    build: ../Listing
-    ports:
-      - "8003:8003"
-    depends_on:
-      - mongo-product
-      - rabbitmq
-    volumes:
-      - ../Listing/mysite:/app
+    inventory:
+        container_name: inventory-app
+        restart: always
+        build: ../Product
+        ports:
+            - "8002:8002"
+        depends_on:
+            - mongo-product
+            - rabbitmq
+            - redis
+        volumes:
+            - ../Product:/app
 
-  order:
-    container_name: order-app
-    restart: always
-    build: ../Order
-    ports:
-      - "8004:8004"
-    depends_on:
-      - mongo-order
-      - rabbitmq
-    volumes:
-      - ../Order:/app
+    listing:
+        container_name: listing-app
+        restart: always
+        build: ../Listing
+        ports:
+            - "8003:8003"
+        depends_on:
+            - mongo-product
+            - rabbitmq
+            - redis
+        volumes:
+            - ../Listing/mysite:/app
 
-  nginx-proxy:
-    container_name: nginx-container
-    restart: always
-    build: ../proxy
-    ports:
-      - "80:80"
-    links:
-      - user
-      - inventory
-      - order
-    volumes:
-      - ../proxy/nginx.conf:/etc/nginx/nginx.conf
+    order:
+        container_name: order-app
+        restart: always
+        build: ../Order
+        ports:
+            - "8004:8004"
+        depends_on:
+            - mongo-order
+            - rabbitmq
+            - redis
+        volumes:
+            - ../Order:/app
+
+    expiration:
+        container_name: expiration-app
+        restart: always
+        build: ../expiration
+        depends_on:
+            - rabbitmq
+            - redis
+        volumes:
+            - ../expiration:/app
+    nginx-proxy:
+        container_name: nginx-container
+        restart: always
+        build: ../proxy
+        ports:
+            - "80:80"
+        links:
+            - user
+            - inventory
+            - order
+        volumes:
+            - ../proxy/nginx.conf:/etc/nginx/nginx.conf
 volumes:
-  shared_database:
+    shared_database:

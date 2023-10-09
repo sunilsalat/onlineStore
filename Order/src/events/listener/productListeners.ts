@@ -5,6 +5,7 @@ import { baseListener } from "./baseListener";
 
 export const loadProductListeners = async () => {
     // product listeners
+    // this function binds queues as soon as order service connect to rabbitmq
     await baseListener(
         mqClient.channel,
         "PRODUCT_CREATED",
