@@ -1,4 +1,5 @@
 // //Message Broker
+require("dotenv").config();
 import amqplib from "amqplib";
 
 const MSG_QUEUE_URL = process.env.MSG_QUEUE_UEL;

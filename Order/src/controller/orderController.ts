@@ -1,10 +1,32 @@
 import { Request, Response } from "express";
 import * as IDalOrder from "../dataaccess/orderService";
+import * as IDalProduct from "../dataaccess/productService";
 import { PublishMessage } from "../events/publisher/basePublisher";
 import { mqClient } from "../events/mq/rpc";
 
 export const createOrder = async (req: Request, res: Response) => {
-    const { data } = req.body;
+    let data = req.body;
+    data.date = new Date();
+    data.userId = "6523c809af9b16e8765c8042";
+
+    const productVariant: any = await IDalProduct.getProductByfilter({
+        _id: data.variantId,
+        qty: { $gt: Number(data.qty) },
+    });
+
+    if (productVariant) {
+        const { _id, productId, sku, price, name } = productVariant;
+        data.items = [
+            {
+                variantId: _id,
+                productId,
+                sku,
+                itemPrice: price,
+                itemName: name,
+                itemQty: data.qty,
+            },
+        ];
+    }
 
     const obj = await IDalOrder.createOrder(data);
 
@@ -18,7 +40,7 @@ export const createOrder = async (req: Request, res: Response) => {
         });
     }
 
-    res.status(201).json({ data: obj, msg: "Order created" });
+    res.status(201).json({ data: "", msg: "Order created" });
 };
 
 export const getAllOrder = async (req: Request, res: Response) => {

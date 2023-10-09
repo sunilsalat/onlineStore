@@ -19,4 +19,8 @@ router.post("/att/all", ProductController.getAllAttribute);
 router.post("/attopt/create", ProductController.createAttributeOptions);
 router.post("/attopt/all", ProductController.getAllAttributeOptions);
 
+router.post("/add", ProductController.addInventory);
+
+router.post("/store/add", ProductController.addStore);
+
 export default router;

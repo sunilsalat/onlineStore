@@ -1,16 +1,40 @@
+import { expirationQueue } from "../../queue/expiration_queue";
 import { mqClient } from "../mq/rpc";
 import { baseListener } from "./baseListener";
+// const delay = 900000;
+const delay = 60 * 1000;
 
 export const loadOrderListeners = async () => {
-    // product listeners
     await baseListener(
         mqClient.channel,
         "ORDER_CREATED",
         async (channel: any, msg: any) => {
             const payload = JSON.parse(msg.content.toString());
-            console.log("ORDER_CREATED", payload);
+
+            console.log(
+                "EXPIRATION-SERVICT RECEVIED EVENT:",
+                "ORDER_CREATED",
+                payload
+            );
+
+            try {
+                const t = expirationQueue.add(
+                    {
+                        orderId: payload.orderId,
+                    },
+                    {
+                        delay,
+                    }
+                );
+
+                console.log(t, "is t");
+            } catch (error) {
+                console.log(error);
+            }
 
             if (payload) {
+                console.log(`${msg} acknowlodged`);
+                channel.ack(msg);
             }
         }
     );

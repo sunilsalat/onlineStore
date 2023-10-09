@@ -1,5 +1,6 @@
 import { loadOrderListeners } from "./events/listener/orderListner";
 import { mqClient } from "./events/mq/rpc";
+require("dotenv").config();
 
 const start = async () => {
     try {
@@ -15,7 +16,9 @@ const start = async () => {
 
             loadOrderListeners();
         }, 15000);
-    } catch (error) {}
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 start();

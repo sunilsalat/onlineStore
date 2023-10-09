@@ -20,7 +20,7 @@ const OrderSchema = new mongoose.Schema({
     },
     address: {
         type: String,
-        required: [true, "phone is required"],
+        required: [true, "address is required"],
     },
     phone: {
         type: Number,
@@ -34,6 +34,7 @@ const OrderSchema = new mongoose.Schema({
             "OUT_FOR_DELIVERY",
             "DELIVERED",
         ],
+        default: "CREATED",
     },
     items: [OrderItems],
     isPaid: {

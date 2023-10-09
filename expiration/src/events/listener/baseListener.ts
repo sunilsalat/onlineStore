@@ -1,3 +1,4 @@
+require("dotenv").config();
 const EXCHANGE_NAME = process.env.EXCHANGE_NAME;
 
 export const baseListener = async (

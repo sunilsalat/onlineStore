@@ -6,6 +6,7 @@ import { Product } from "../models/inventory/Product";
 import { ProductAttribute } from "../models/inventory/ProductAttribute";
 import { ProductVariant } from "../models/inventory/ProductVariant";
 import { StoreProduct } from "../models/inventory/StoreProduct";
+import { Store } from "../models/inventory/store";
 
 /* Product */
 export const createProduct = async (data: any, session?: any) => {
@@ -118,5 +119,17 @@ export const findAttributeOptionByFilter = async (filter: any) => {
 
 export const findAttributeOptionsByFilter = async (filter: any) => {
     const obj = await AttributeOption.find(filter);
+    return obj;
+};
+
+/* Inventory */
+export const addItemInventory = async (data: any) => {
+    const obj = await StoreProduct.create(data);
+    return obj;
+};
+
+/* Store */
+export const createStore = async (data: any) => {
+    const obj = await Store.create(data);
     return obj;
 };
