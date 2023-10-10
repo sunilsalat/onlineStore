@@ -1,6 +1,6 @@
 import { loadOrderListeners } from "./events/listener/orderListner";
 import { mqClient } from "./events/mq/rpc";
-require("dotenv").config();
+import { variables } from "./config";
 
 const start = async () => {
     try {
@@ -8,8 +8,8 @@ const start = async () => {
 
         setTimeout(async () => {
             await mqClient.connect(
-                process.env.EXCHANGE_NAME!,
-                process.env.MSG_QUEUE_URL!
+                variables.exchange_name!,
+                variables.msg_queue_url!
             );
 
             console.log("expiration app connected to MQ");

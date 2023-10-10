@@ -1,6 +1,7 @@
 import { expirationQueue } from "../../queue/expiration_queue";
 import { mqClient } from "../mq/rpc";
 import { baseListener } from "./baseListener";
+
 // const delay = 900000;
 const delay = 60 * 1000;
 
@@ -12,22 +13,19 @@ export const loadOrderListeners = async () => {
             const payload = JSON.parse(msg.content.toString());
 
             console.log(
-                "EXPIRATION-SERVICT RECEVIED EVENT:",
+                "EXPIRATION-SERVICT-RECEVIED-EVENT:",
                 "ORDER_CREATED",
                 payload
             );
 
             try {
-                const t = expirationQueue.add(
+                await expirationQueue.add(
                     {
                         orderId: payload.orderId,
                     },
-                    {
-                        delay,
-                    }
+                    { delay: delay }
                 );
-
-                console.log(t, "is t");
+                console.log("item added in bull queue");
             } catch (error) {
                 console.log(error);
             }

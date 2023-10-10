@@ -17,9 +17,9 @@ services:
             - "16379:6379"
         environment:
             - ALLOW_EMPTY_PASSWORD=yes
-        volumes:
-            # - /path/to/your_redis.conf:/opt/bitnami/redis/mounted-etc/redis.conf
-            - shared_database:/redis/db1
+        # volumes:
+        #     # - /path/to/your_redis.conf:/opt/bitnami/redis/mounted-etc/redis.conf
+        #     # - shared_database:/redis/db1
 
     mongo-user:
         container_name: mongo-user

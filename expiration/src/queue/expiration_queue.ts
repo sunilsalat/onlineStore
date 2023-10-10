@@ -1,25 +1,22 @@
 import Queue from "bull";
 import { PublishMessage } from "../events/publisher/basePublisher";
 import { mqClient } from "../events/mq/rpc";
-require("dotenv").config();
+import { variables } from "../config";
 
 interface Payload {
     orderId: string;
 }
-
 const ORDER_EXPIRED = "ORDER_EXPIRED";
-const EXCHANGE_NAME = process.env.EXCHANGE_NAME!;
 
-const expirationQueue = new Queue<Payload>("order:expiration", {
-    redis: {
-        host: process.env.REDIS_HOST,
-    },
-});
+const expirationQueue = new Queue("order:expiration", variables.redis_url!);
 
-expirationQueue.process(async (job: any) => {
+expirationQueue.process((job: any, done) => {
+    console.log("process:bullmq");
     const ch = mqClient.channel;
-    console.log("inside process:bullmq");
-    PublishMessage(ch, EXCHANGE_NAME, ORDER_EXPIRED, { orderId: job.orderId });
+    PublishMessage(ch, variables.exchange_name!, ORDER_EXPIRED, {
+        orderId: job.data.orderId,
+    });
+    done();
 });
 
 export { expirationQueue };
