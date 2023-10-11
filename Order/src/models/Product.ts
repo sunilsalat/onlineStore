@@ -11,10 +11,6 @@ const ProductSchema = new mongoose.Schema({
     description: {
         type: String,
     },
-    qty: {
-        type: Number,
-        default: 0,
-    },
     productId: { type: Types.ObjectId },
     sku: { type: Number },
     productType: { type: String },

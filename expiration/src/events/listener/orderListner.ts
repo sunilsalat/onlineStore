@@ -2,8 +2,8 @@ import { expirationQueue } from "../../queue/expiration_queue";
 import { mqClient } from "../mq/rpc";
 import { baseListener } from "./baseListener";
 
-// const delay = 900000;
-const delay = 60 * 1000;
+const delay = 60000;
+// const delay = 60 * 1000;
 
 export const loadOrderListeners = async () => {
     await baseListener(
@@ -22,6 +22,7 @@ export const loadOrderListeners = async () => {
                 await expirationQueue.add(
                     {
                         orderId: payload.orderId,
+                        items: payload.items,
                     },
                     { delay: delay }
                 );

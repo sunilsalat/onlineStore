@@ -5,17 +5,20 @@ import { PublishMessage } from "../events/publisher/basePublisher";
 import { mqClient } from "../events/mq/rpc";
 
 export const createOrder = async (req: Request, res: Response) => {
+    /* this route behave as item added to bag
+       item qty will only be reudced in inventory service when payment is done 
+    */
     let data = req.body;
     data.date = new Date();
     data.userId = "6523c809af9b16e8765c8042";
 
     const productVariant: any = await IDalProduct.getProductByfilter({
         _id: data.variantId,
-        qty: { $gt: Number(data.qty) },
     });
 
     if (productVariant) {
         const { _id, productId, sku, price, name } = productVariant;
+
         data.items = [
             {
                 variantId: _id,
@@ -32,11 +35,10 @@ export const createOrder = async (req: Request, res: Response) => {
 
     if (obj) {
         // push msg to expiration service and reserve product for 15 mins
-        //
-
         const ch = mqClient.channel;
-        PublishMessage(ch, process.env.EXCHANGE_NAME!, "ORDER_CREATED", {
+        await PublishMessage(ch, process.env.EXCHANGE_NAME!, "ORDER_CREATED", {
             orderId: obj._id,
+            items: obj.items,
         });
     }
 

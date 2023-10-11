@@ -304,16 +304,6 @@ export const addInventory = async (req: Request, res: Response) => {
     const data = req.body;
     const obj: any = await IDalInventory.addItemInventory(data);
 
-    if (obj) {
-        const ch = mqClient.channel;
-        PublishMessage(ch, process.env.EXCHANGE_NAME!, "PRODUCT_UPDATED", {
-            variantId: obj.productVariantId,
-            data: {
-                qty: obj.availableQty,
-            },
-        });
-    }
-
     res.status(201).json({ data: obj, msg: "Item added to inventory" });
 };
 

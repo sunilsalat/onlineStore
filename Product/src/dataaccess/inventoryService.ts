@@ -128,6 +128,11 @@ export const addItemInventory = async (data: any) => {
     return obj;
 };
 
+export const updateInventory = async (filter: any, data: any) => {
+    const obj = await StoreProduct.findOneAndUpdate(filter, data);
+    return obj;
+};
+
 /* Store */
 export const createStore = async (data: any) => {
     const obj = await Store.create(data);
