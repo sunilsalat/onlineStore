@@ -20,7 +20,6 @@ export const baseListener = async (
             if (msg.content) {
                 const payload = JSON.parse(msg.content.toString());
                 callback(channel, msg);
-                // channel.ack(msg);
             }
         },
         {
