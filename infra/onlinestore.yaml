@@ -17,9 +17,9 @@ services:
             - "16379:6379"
         environment:
             - ALLOW_EMPTY_PASSWORD=yes
-        # volumes:
-        #     # - /path/to/your_redis.conf:/opt/bitnami/redis/mounted-etc/redis.conf
-        #     # - shared_database:/redis/db1
+        volumes:
+            # - /path/to/your_redis.conf:/opt/bitnami/redis/mounted-etc/redis.conf
+            - redis-data:/redis/db
 
     mongo-user:
         container_name: mongo-user
@@ -27,7 +27,8 @@ services:
         ports:
             - "27017:27017"
         volumes:
-            - shared_database:/data/db1
+            - user-data:/data/db
+            # - ~/mongo/data:/data/db
 
     mongo-product:
         container_name: mongo-product
@@ -35,12 +36,10 @@ services:
         ports:
             - "27018:27017"
         volumes:
-            - shared_database:/data/db
+            - product-data:/data/db
+            # - ~/mongo/data:/data/db
             - ./rs-init.sh:/scripts/rs-init.sh
-        entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs"]
-
-        # entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0"]
-        # command: --wiredTigerCacheSizeGB 0.25 --replSet s0
+        entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0"]
 
     mongo-order:
         container_name: mongo-order
@@ -48,7 +47,8 @@ services:
         ports:
             - "27019:27017"
         volumes:
-            - shared_database:/data/db2
+            - order-data:/data/db
+            # - ~/mongo/data:/data/db
 
     user:
         container_name: user-app
@@ -124,4 +124,7 @@ services:
         volumes:
             - ../proxy/nginx.conf:/etc/nginx/nginx.conf
 volumes:
-    shared_database:
+    product-data:
+    user-data:
+    order-data:
+    redis-data:

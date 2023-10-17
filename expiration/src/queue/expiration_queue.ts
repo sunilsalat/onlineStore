@@ -13,10 +13,10 @@ const expirationQueue = new Queue("order:expiration", variables.redis_url!);
 expirationQueue.process((job: any, done) => {
     console.log("process:bullmq");
     const ch = mqClient.channel;
-    // PublishMessage(ch, variables.exchange_name!, ORDER_EXPIRED, {
-    //     orderId: job.data.orderId,
-    //     items: job.data.items,
-    // });
+    PublishMessage(ch, variables.exchange_name!, ORDER_EXPIRED, {
+        orderId: job.data.orderId,
+        items: job.data.items,
+    });
     done();
 });
 

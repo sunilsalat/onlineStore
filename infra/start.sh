@@ -4,6 +4,6 @@
 
 docker-compose -f "./onlinestore.yaml" up -d 
 
-sleep 5
+sleep 15
 
 docker exec mongo-product chmod "+x"  /scripts/rs-init.sh
