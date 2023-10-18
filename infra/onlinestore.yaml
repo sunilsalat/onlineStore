@@ -4,14 +4,14 @@ services:
     rabbitmq:
         container_name: rabbitmq-container
         restart: always
-        build: ../broker
+        image: rabbitmq
         ports:
             # AMQP protocol port
             - "5672:5672"
             # HTTP management UI
             - "15672:15672"
-        # voluems:
-        #     - ../broker/enabled_plugins:/etc/rabbitmq/enabled_plugins
+        volumes:
+            - ../broker/enabled_plugins:/etc/rabbitmq/enabled_plugins
 
     redis:
         container_name: redis-container
