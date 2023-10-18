@@ -3,18 +3,21 @@ version: "3"
 services:
     rabbitmq:
         container_name: rabbitmq-container
-        image: rabbitmq
+        restart: always
+        build: ../broker
         ports:
             # AMQP protocol port
             - "5672:5672"
             # HTTP management UI
             - "15672:15672"
+        # voluems:
+        #     - ../broker/enabled_plugins:/etc/rabbitmq/enabled_plugins
 
     redis:
         container_name: redis-container
         image: bitnami/redis
-        ports:
-            - "16379:6379"
+        # ports:
+        #     - "16379:6379"
         environment:
             - ALLOW_EMPTY_PASSWORD=yes
         volumes:
@@ -39,7 +42,7 @@ services:
             - product-data:/data/db
             # - ~/mongo/data:/data/db
             - ./rs-init.sh:/scripts/rs-init.sh
-        entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0"]
+        entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs"]
 
     mongo-order:
         container_name: mongo-order
