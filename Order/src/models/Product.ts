@@ -3,7 +3,7 @@ import mongoose, { Types } from "mongoose";
 const ProductSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, "first name is required"],
+        required: [true, "product name is required"],
     },
     category: {
         type: String,
