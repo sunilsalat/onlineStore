@@ -33,6 +33,7 @@ const OrderSchema = new mongoose.Schema({
             "DISPATCHED",
             "OUT_FOR_DELIVERY",
             "DELIVERED",
+            "CANCELLED",
         ],
         default: "CREATED",
     },

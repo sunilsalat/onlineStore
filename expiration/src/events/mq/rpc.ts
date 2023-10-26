@@ -18,9 +18,9 @@ class MQClient {
     async connect(EXCHANGE_NAME: string, MSG_QUEUE_URL: string) {
         const connection = await amqplib.connect(MSG_QUEUE_URL);
         this._channel = await connection.createChannel();
-        await this._channel.assertQueue(EXCHANGE_NAME, "direct", {
-            durable: true,
-        });
+        // await this._channel.assertQueue(EXCHANGE_NAME, "direct", {
+        //     durable: true,
+        // });
     }
 }
 

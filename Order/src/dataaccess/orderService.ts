@@ -14,3 +14,8 @@ export const findMultipleOrderByFilter = async (filter: any) => {
     const obj = await Order.find(filter);
     return obj;
 };
+
+export const findOrderAndUpdate = async (filter: any, data: any) => {
+    const obj = await Order.findOneAndUpdate(filter, data);
+    return obj;
+};
