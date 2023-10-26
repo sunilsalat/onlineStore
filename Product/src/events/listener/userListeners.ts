@@ -1,5 +1,5 @@
 import { User } from "../../models/User";
-import { mqClient } from "../mq/rpc";
+import { mqClient } from "../mq";
 import { baseListener } from "./baseListener";
 
 export const userListeners = async () => {

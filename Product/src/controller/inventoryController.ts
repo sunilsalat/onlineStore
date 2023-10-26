@@ -3,7 +3,7 @@ import * as IDalInventory from "../dataaccess/inventoryService";
 import { ProductVariant } from "../models/inventory/ProductVariant";
 import mongoose, { Types } from "mongoose";
 import { PublishMessage } from "../events/publisher/basePublisher";
-import { mqClient } from "../events/mq/rpc";
+import { mqClient } from "../events/mq";
 
 /* Product */
 export const createProduct = async (req: Request, res: Response) => {

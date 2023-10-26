@@ -2,11 +2,11 @@ import { Request, Response } from "express";
 import * as IDalOrder from "../dataaccess/orderService";
 import * as IDalProduct from "../dataaccess/productService";
 import { PublishMessage } from "../events/publisher/basePublisher";
-import { mqClient } from "../events/mq/rpc";
+import { mqClient, RPCRequest } from "../events/mq/index";
 
 export const createOrder = async (req: Request, res: Response) => {
-    /* this route behave as item added to bag
-       item qty will only be reudced in inventory service when payment is done 
+    /*
+       item qty will only be reudced in inventory service when payment is done
     */
     let data = req.body;
     data.date = new Date();
@@ -15,6 +15,14 @@ export const createOrder = async (req: Request, res: Response) => {
     const productVariant: any = await IDalProduct.getProductByfilter({
         _id: data.variantId,
     });
+
+    // const payload = await RPCRequest("GET_PRODUCT_DETAIL", {
+    //     productVariantId: productVariant._id,
+    // });
+
+    if (!productVariant.isActive) {
+        throw new Error("Can not place your order now!");
+    }
 
     if (productVariant) {
         const { _id, productId, sku, price, name } = productVariant;

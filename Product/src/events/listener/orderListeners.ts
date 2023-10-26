@@ -1,5 +1,5 @@
 import { updateInventory } from "../../dataaccess/inventoryService";
-import { mqClient } from "../mq/rpc";
+import { RPCObserver, mqClient } from "../mq";
 import { baseListener } from "./baseListener";
 
 export const orderListeners = async () => {
@@ -46,4 +46,8 @@ export const orderListeners = async () => {
             channel.ack(msg);
         }
     );
+
+    // RPC OBSERVER
+
+    await RPCObserver("GET_PRODUCT_DETAIL");
 };

@@ -138,3 +138,13 @@ export const createStore = async (data: any) => {
     const obj = await Store.create(data);
     return obj;
 };
+
+export const getResBasedOnEvent = async (event: any) => {
+    switch (event.type) {
+        case "GET_PRODUCT_DETAIL":
+            const obj = findVariantByFilter({
+                _id: event.payload.productVariantId,
+            });
+            return obj;
+    }
+};

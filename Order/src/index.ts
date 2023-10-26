@@ -1,6 +1,6 @@
 import connectToDb from "./config/connectDb";
 import { loadProductListeners } from "./events/listener/productListeners";
-import { mqClient } from "./events/mq/rpc";
+import { mqClient } from "./events/mq";
 import { app } from "./server";
 require("dotenv").config();
 

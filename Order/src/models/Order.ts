@@ -29,7 +29,7 @@ const OrderSchema = new mongoose.Schema({
         type: String,
         enum: [
             "CREATED",
-            "APPROVED_By_SELLER",
+            "APPROVED_BY_SELLER",
             "DISPATCHED",
             "OUT_FOR_DELIVERY",
             "DELIVERED",
