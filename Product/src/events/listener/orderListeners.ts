@@ -18,6 +18,8 @@ export const orderListeners = async () => {
                         { productId, productVariantId: variantId },
                         { $inc: { availableQty: -Number(itemQty) } }
                     );
+
+                    // TODO - notify seller or store keeper when reorder point reached to replenish stock
                 }
             }
 
@@ -27,9 +29,8 @@ export const orderListeners = async () => {
 
     await baseListener(
         mqClient.channel,
-        "ORDER_EXPIRED",
+        "INC_INV_QTY",
         async (channel, msg) => {
-            // reduce the quantiy from warehouse
             const payload = JSON.parse(msg.content.toString());
             console.log("ORDER_EXPIRED", payload);
             if (payload && payload.items.length > 0) {

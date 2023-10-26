@@ -5,6 +5,7 @@ import {
 import { createProduct, updateProduct } from "../../dataaccess/productService";
 import { Product } from "../../models/Product";
 import { mqClient } from "../mq";
+import { PublishMessage } from "../publisher/basePublisher";
 import { baseListener } from "./baseListener";
 
 export const expirationListeners = async () => {
@@ -38,6 +39,13 @@ export const expirationListeners = async () => {
                     orderObj.status = "CANCELLED";
                     await orderObj.save();
                 }
+
+                PublishMessage(
+                    mqClient.channel,
+                    process.env.EXCHANGE_NAME!,
+                    "INC_INV_QTY",
+                    payload
+                );
 
                 console.log(`${msg} acknowlodged`);
                 channel.ack(msg);

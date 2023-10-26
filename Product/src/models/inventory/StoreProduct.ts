@@ -20,6 +20,9 @@ const StoreProductSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
+    reOrderPoint: {
+        type: Number,
+    },
     location: {
         type: String,
     },
