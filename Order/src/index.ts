@@ -1,4 +1,5 @@
 import connectToDb from "./config/connectDb";
+import { expirationListeners } from "./events/listener/expirationListeners";
 import { loadProductListeners } from "./events/listener/productListeners";
 import { mqClient } from "./events/mq";
 import { app } from "./server";
@@ -16,6 +17,7 @@ const start = async () => {
         console.log("Order app connected to MQ");
 
         loadProductListeners();
+        expirationListeners();
     }, 15000);
 
     app.listen(process.env.PORT, () => {

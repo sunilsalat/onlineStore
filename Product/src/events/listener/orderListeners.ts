@@ -32,7 +32,7 @@ export const orderListeners = async () => {
         "INC_INV_QTY",
         async (channel, msg) => {
             const payload = JSON.parse(msg.content.toString());
-            console.log("ORDER_EXPIRED", payload);
+            console.log("INC_INV_QTY", payload);
             if (payload && payload.items.length > 0) {
                 for (var i = 0; i < payload.items.length; i++) {
                     const { variantId, productId, itemQty } = payload.items[i];
