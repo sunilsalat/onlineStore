@@ -93,11 +93,13 @@ services:
             - ../Listing/mysite:/app
 
     order:
-        container_name: order-app
+        # container_name: order-app
         restart: always
         build: ../Order
+        deploy:
+            replicas: 2
         ports:
-            - "8004:8004"
+            - "8004-8005:8004"
         depends_on:
             - mongo-order
             - rabbitmq

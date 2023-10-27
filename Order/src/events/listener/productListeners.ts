@@ -10,7 +10,6 @@ export const loadProductListeners = async () => {
         "PRODUCT_CREATED",
         async (channel, msg) => {
             const payload = JSON.parse(msg.content.toString());
-            console.log("PRODUCT_CREATED", payload);
 
             if (payload) {
                 const productObj = await createProduct(payload);
