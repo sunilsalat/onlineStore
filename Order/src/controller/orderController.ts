@@ -58,3 +58,12 @@ export const getAllOrder = async (req: Request, res: Response) => {
     const obj = await IDalOrder.findMultipleOrderByFilter({});
     res.status(201).json({ data: obj, msg: "" });
 };
+
+export const updateOrderStatus = async (req: Request, res: Response) => {
+    const { orderId, orderStatus } = req.body;
+    const filter = { _id: orderId };
+    const data = { status: orderStatus };
+    const obj = await IDalOrder.findOrderAndUpdate(filter, data);
+    console.log(`request received-${orderStatus}`);
+    res.status(200).json({ data: "", msg: "order updated" });
+};

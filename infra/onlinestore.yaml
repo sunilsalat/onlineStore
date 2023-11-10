@@ -71,7 +71,7 @@ services:
         restart: always
         build: ../Product
         ports:
-            - "8002:8002"
+            - "8009:8002"
         depends_on:
             - mongo-product
             - rabbitmq
@@ -98,8 +98,8 @@ services:
         build: ../Order
         deploy:
             replicas: 2
-        ports:
-            - "8004-8005:8004"
+        # ports:
+        #     - "8004"
         depends_on:
             - mongo-order
             - rabbitmq
@@ -116,6 +116,7 @@ services:
             - redis
         volumes:
             - ../expiration:/app
+
     nginx-proxy:
         container_name: nginx-container
         restart: always
