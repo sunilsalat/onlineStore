@@ -26,7 +26,6 @@ export const createOrder = async (req: Request, res: Response) => {
 
     if (productVariant) {
         const { _id, productId, sku, price, name } = productVariant;
-
         data.items = [
             {
                 variantId: _id,

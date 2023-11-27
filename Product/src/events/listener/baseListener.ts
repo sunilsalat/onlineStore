@@ -4,11 +4,12 @@ const EXCHANGE_NAME = process.env.EXCHANGE_NAME;
 export const baseListener = async (
     channel: any,
     TOPIC: string,
-    callback: any
+    callback: any,
+    queueName?: string
 ) => {
     console.log({ TOPIC });
     await channel.assertExchange("ONLINE_STORE", "direct", { durable: true });
-    const q = await channel.assertQueue("", { exclusive: true });
+    const q = await channel.assertQueue(queueName ? queueName : "");
     console.log(` Waiting for messages in queue: ${q.queue}`);
 
     channel.bindQueue(q.queue, "ONLINE_STORE", TOPIC);

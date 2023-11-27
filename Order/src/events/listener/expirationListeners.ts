@@ -40,6 +40,8 @@ export const expirationListeners = async () => {
                     await orderObj.save();
                 }
 
+                console.log("before inv inc request");
+
                 PublishMessage(
                     mqClient.channel,
                     process.env.EXCHANGE_NAME!,
@@ -50,6 +52,7 @@ export const expirationListeners = async () => {
                 console.log(`${msg} acknowlodged`);
                 channel.ack(msg);
             }
-        }
+        },
+        "order-expired"
     );
 };

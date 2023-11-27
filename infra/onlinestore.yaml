@@ -98,8 +98,8 @@ services:
         build: ../Order
         deploy:
             replicas: 2
-        # ports:
-        #     - "8004"
+        ports:
+            - "8004"
         depends_on:
             - mongo-order
             - rabbitmq

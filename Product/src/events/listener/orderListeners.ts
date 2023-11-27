@@ -23,7 +23,8 @@ export const orderListeners = async () => {
             }
 
             channel.ack(msg);
-        }
+        },
+        "product-order"
     );
 
     await baseListener(
@@ -34,7 +35,6 @@ export const orderListeners = async () => {
             if (payload && payload.items.length > 0) {
                 for (var i = 0; i < payload.items.length; i++) {
                     const { variantId, productId, itemQty } = payload.items[i];
-
                     await updateInventory(
                         { productId, productVariantId: variantId },
                         { $inc: { availableQty: Number(itemQty) } }
