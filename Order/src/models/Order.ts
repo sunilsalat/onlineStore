@@ -49,7 +49,6 @@ const OrderSchema = new mongoose.Schema({
     },
     paidAt: {
         type: Date,
-        default: false,
     },
 });
 
