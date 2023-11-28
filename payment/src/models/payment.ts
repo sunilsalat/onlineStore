@@ -13,12 +13,16 @@ const PaymentSchema = new mongoose.Schema(
         paymentMethod: {
             type: String,
         },
-        paymentAmount: {
+        amount: {
             type: Number,
         },
         paymentStatus: {
             type: String,
-            enum: ["pending", "completed", "failed"],
+            enum: ["CREATED", "CAPTURED", "REFUNDED", "TRANSFER"],
+            default: "CREATED",
+        },
+        response: {
+            type: String,
         },
     },
     {

@@ -52,6 +52,14 @@ services:
         volumes:
             - order-data:/data/db
             # - ~/mongo/data:/data/db
+    mongo-payment:
+        container_name: mongo-payment
+        image: mongo
+        ports:
+            - "27020:27017"
+        volumes:
+            - payment-data:/data/db
+            # - ~/mongo/data:/data/db
 
     user:
         container_name: user-app
@@ -117,6 +125,18 @@ services:
         volumes:
             - ../expiration:/app
 
+    payment:
+        container_name: payment-app
+        restart: always
+        build: ../expiration
+        ports:
+            - "8005"
+        depends_on:
+            - rabbitmq
+            - redis
+        volumes:
+            - ../payment:/app
+
     nginx-proxy:
         container_name: nginx-container
         restart: always
@@ -133,4 +153,5 @@ volumes:
     product-data:
     user-data:
     order-data:
+    payment-data:
     redis-data:

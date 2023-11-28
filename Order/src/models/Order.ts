@@ -30,16 +30,25 @@ const OrderSchema = new mongoose.Schema({
         enum: [
             "CREATED",
             "APPROVED_BY_SELLER",
-            "DISPATCHED",
+            "SHIPPED",
             "OUT_FOR_DELIVERY",
             "DELIVERED",
             "CANCELLED",
+            "REFUND_INITIATED",
+            "REFUNDED",
         ],
         default: "CREATED",
     },
     items: [OrderItems],
+    paymentIntentId: {
+        type: String,
+    },
     isPaid: {
         type: Boolean,
+        default: false,
+    },
+    paidAt: {
+        type: Date,
         default: false,
     },
 });

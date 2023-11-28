@@ -21,7 +21,7 @@ export const baseListener = async (
 
     channel.consume(
         q.queue,
-        async (msg) => {
+        async (msg: any) => {
             if (msg.content) {
                 const payload = JSON.parse(msg.content.toString());
                 callback(channel, msg);
