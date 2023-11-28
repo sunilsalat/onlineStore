@@ -11,6 +11,8 @@ export const orderListeners = async () => {
         async (channel: any, msg: any) => {
             const payload = JSON.parse(msg.content.toString());
 
+            console.log(`Event received payment`, payload);
+
             if (payload) {
                 const { orderId, orderAmount, userId, currency } = payload;
                 await addPayment({
@@ -18,6 +20,7 @@ export const orderListeners = async () => {
                     amount: orderAmount,
                     orderId,
                 });
+                channel.ack(msg);
             }
         },
         "payment.order_created"
