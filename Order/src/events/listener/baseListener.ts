@@ -7,7 +7,6 @@ export const baseListener = async (
     callback: any,
     queueName?: string
 ) => {
-    console.log({ TOPIC });
     let options: any = {};
 
     await channel.assertExchange("ONLINE_STORE", "direct", { durable: true });
@@ -25,6 +24,7 @@ export const baseListener = async (
             if (msg.content) {
                 const payload = JSON.parse(msg.content.toString());
                 callback(channel, msg);
+                console.log(`${msg} acknowlodged`);
             }
         },
         {

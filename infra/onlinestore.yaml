@@ -100,14 +100,25 @@ services:
         volumes:
             - ../Listing/mysite:/app
 
-    order:
-        # container_name: order-app
+    order-one:
+        container_name: order-app-one
         restart: always
         build: ../Order
-        deploy:
-            replicas: 2
         ports:
             - "8004"
+        depends_on:
+            - mongo-order
+            - rabbitmq
+            - redis
+        volumes:
+            - ../Order:/app
+
+    order-two:
+        container_name: order-app-two
+        restart: always
+        build: ../Order
+        ports:
+            - "8005"
         depends_on:
             - mongo-order
             - rabbitmq
@@ -130,7 +141,7 @@ services:
         restart: always
         build: ../expiration
         ports:
-            - "8005"
+            - "8006"
         depends_on:
             - rabbitmq
             - redis
@@ -146,7 +157,8 @@ services:
         links:
             - user
             - inventory
-            - order
+            - order-one
+            - order-two
         volumes:
             - ../proxy/nginx.conf:/etc/nginx/nginx.conf
 volumes:

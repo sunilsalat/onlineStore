@@ -12,7 +12,7 @@ const ProductVariantSchema: Schema = new mongoose.Schema(
             type: String,
             required: [true, "Product name is required"],
         },
-        productType: { type: String },
+        productType: { type: String }, // combination of attributes , yellow-medium, red-medium etc.
         parentProductId: {
             type: Schema.Types.Mixed,
         },

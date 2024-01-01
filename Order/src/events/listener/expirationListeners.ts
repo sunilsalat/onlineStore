@@ -29,7 +29,6 @@ export const expirationListeners = async () => {
                     "DELIVERED",
                 ].includes(orderObj?.status)
             ) {
-                console.log(`${msg} acknowlodged`);
                 channel.ack(msg);
                 return;
             }
@@ -40,8 +39,6 @@ export const expirationListeners = async () => {
                     await orderObj.save();
                 }
 
-                console.log("before inv inc request");
-
                 PublishMessage(
                     mqClient.channel,
                     process.env.EXCHANGE_NAME!,
@@ -49,7 +46,6 @@ export const expirationListeners = async () => {
                     payload
                 );
 
-                console.log(`${msg} acknowlodged`);
                 channel.ack(msg);
             }
         },

@@ -14,11 +14,11 @@ export const loadProductListeners = async () => {
             if (payload) {
                 const productObj = await createProduct(payload);
                 if (productObj) {
-                    console.log(`${msg} acknowlodged`);
                     channel.ack(msg);
                 }
             }
-        }
+        },
+        "product-created"
     );
 
     await baseListener(
@@ -32,10 +32,10 @@ export const loadProductListeners = async () => {
                     payload.data
                 );
                 if (productObj) {
-                    console.log(`${msg} acknowlodged`);
                     channel.ack(msg);
                 }
             }
-        }
+        },
+        "product-updated"
     );
 };

@@ -245,6 +245,10 @@ export const updateProductVariant = async (req: Request, res: Response) => {
         data
     );
 
+    if (!obj) {
+        throw Error("Select valid variant to update");
+    }
+
     if (obj) {
         const ch = mqClient.channel;
         PublishMessage(ch, process.env.EXCHANGE_NAME!, "PRODUCT_UPDATED", {
