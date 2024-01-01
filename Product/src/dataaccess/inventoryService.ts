@@ -158,6 +158,10 @@ export const getResBasedOnEvent = async (event: any) => {
 /* REVIEW */
 
 export const addProductReview = async (data: any) => {
-    const obj = await Review.create(data);
+    const obj = await Review.findOneAndUpdate(
+        { userId: data.userId, productId: data.productId },
+        data,
+        { upsert: true, new: true }
+    );
     return obj;
 };
