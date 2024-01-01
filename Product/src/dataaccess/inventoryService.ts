@@ -7,6 +7,7 @@ import { ProductAttribute } from "../models/inventory/ProductAttribute";
 import { ProductVariant } from "../models/inventory/ProductVariant";
 import { StoreProduct } from "../models/inventory/StoreProduct";
 import { Store } from "../models/inventory/store";
+import { Review } from "../models/ProductReview";
 
 /* Product */
 export const createProduct = async (data: any, session?: any) => {
@@ -152,4 +153,11 @@ export const getResBasedOnEvent = async (event: any) => {
             });
             return obj;
     }
+};
+
+/* REVIEW */
+
+export const addProductReview = async (data: any) => {
+    const obj = await Review.create(data);
+    return obj;
 };

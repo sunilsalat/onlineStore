@@ -58,7 +58,6 @@ export const RPCObserver = async (RPC_QUEUE_NAME) => {
 const requestData = async (RPC_QUEUE_NAME, payload, uuid) => {
     const channel = mqClient.channel;
     const q = await channel.assertQueue("", { exclusive: true });
-
     channel.sendToQueue(RPC_QUEUE_NAME, Buffer.from(JSON.stringify(payload)), {
         replyTo: q.queue,
         correlationId: uuid,

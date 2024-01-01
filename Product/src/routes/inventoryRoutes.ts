@@ -1,5 +1,6 @@
 import { Router } from "express";
 import * as ProductController from "../controller/inventoryController";
+import * as ReviewController from "../controller/reviewController";
 const router = Router();
 
 router.post("/product/create", ProductController.createProduct);
@@ -22,5 +23,6 @@ router.post("/attopt/all", ProductController.getAllAttributeOptions);
 router.post("/add", ProductController.addInventory);
 
 router.post("/store/add", ProductController.addStore);
+router.post("/review/add", ReviewController.addProductReview);
 
 export default router;

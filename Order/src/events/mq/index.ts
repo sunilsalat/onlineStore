@@ -1,6 +1,7 @@
 const amqplib = require("amqplib");
 const { v4: uuid4 } = require("uuid");
 import amqplib from "amqplib";
+import { getOrderByFilter } from "../../dataaccess/orderService";
 
 // BROKER
 class MQClient {
@@ -28,6 +29,7 @@ export const RPCObserver = async (RPC_QUEUE_NAME) => {
     channel.assertQueue(RPC_QUEUE_NAME, {
         durable: false,
     });
+
     channel.prefetch(1);
     channel.consume(
         RPC_QUEUE_NAME,
@@ -37,9 +39,19 @@ export const RPCObserver = async (RPC_QUEUE_NAME) => {
                 // write switch case and query database accordingly
                 //
 
+                let res: any;
+                switch (payload.event) {
+                    case "get_order_detail":
+                        const filter = {
+                            "items.variantId": payload.productVariantId,
+                        };
+                        const orderDetail = await getOrderByFilter(filter);
+                        res = orderDetail;
+                }
+
                 channel.sendToQueue(
                     msg.properties.replyTo,
-                    Buffer.from(JSON.stringify("response")),
+                    Buffer.from(JSON.stringify(res)),
                     { correlationId: msg.properties.correlationId }
                 );
                 channel.ack(msg);

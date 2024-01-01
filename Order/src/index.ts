@@ -1,7 +1,7 @@
 import connectToDb from "./config/connectDb";
 import { expirationListeners } from "./events/listener/expirationListeners";
 import { loadProductListeners } from "./events/listener/productListeners";
-import { mqClient } from "./events/mq";
+import { RPCObserver, mqClient } from "./events/mq";
 import { app } from "./server";
 require("dotenv").config();
 
@@ -14,10 +14,9 @@ const start = async () => {
             process.env.MSG_QUEUE_URL!
         );
 
-        console.log("Order app connected to MQ");
-
         loadProductListeners();
         expirationListeners();
+        RPCObserver("ORDER_OBSERVER");
     }, 15000);
 
     app.listen(process.env.PORT, () => {

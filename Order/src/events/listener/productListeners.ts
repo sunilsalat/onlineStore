@@ -1,5 +1,5 @@
 import { createProduct, updateProduct } from "../../dataaccess/productService";
-import { mqClient } from "../mq";
+import { RPCObserver, mqClient } from "../mq";
 import { baseListener } from "./baseListener";
 
 export const loadProductListeners = async () => {
