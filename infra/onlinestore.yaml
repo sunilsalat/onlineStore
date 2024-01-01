@@ -105,7 +105,7 @@ services:
         restart: always
         build: ../Order
         ports:
-            - "8004"
+            - ":8004"
         depends_on:
             - mongo-order
             - rabbitmq
@@ -118,7 +118,7 @@ services:
         restart: always
         build: ../Order
         ports:
-            - "8005"
+            - ":8004"
         depends_on:
             - mongo-order
             - rabbitmq
