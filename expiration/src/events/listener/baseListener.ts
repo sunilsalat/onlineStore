@@ -18,6 +18,7 @@ export const baseListener = async (
             if (msg.content) {
                 const payload = JSON.parse(msg.content.toString());
                 callback(channel, msg);
+                console.log(`${msg} acknowlodged`);
             }
         },
         {

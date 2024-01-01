@@ -13,12 +13,6 @@ export const loadOrderListeners = async () => {
         async (channel: any, msg: any) => {
             const payload = JSON.parse(msg.content.toString());
 
-            console.log(
-                "EXPIRATION-SERVICT-RECEVIED-EVENT:",
-                "ORDER_CREATED",
-                payload
-            );
-
             try {
                 await expirationQueue.add(
                     {
@@ -27,13 +21,11 @@ export const loadOrderListeners = async () => {
                     },
                     { delay: delay }
                 );
-                console.log("item added in bull queue");
             } catch (error) {
                 console.log(error);
             }
 
             if (payload) {
-                console.log(`${msg} acknowlodged`);
                 channel.ack(msg);
             }
         }
